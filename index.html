@@ -1,12 +1,14 @@
-
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>10-x CV | Professional ATS Optimizer</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;700;800&family=Cairo:wght@400;600;700&family=Almarai:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;700;800&family=Cairo:wght@400;600;700&family=Almarai:wght@400;700&display=swap"
+        rel="stylesheet">
     <style>
         :root {
             --brand-deep: #4D2B8C;
@@ -14,33 +16,56 @@
             --brand-accent: #EEA727;
             --brand-highlight: #FFEF5F;
         }
+
         body {
             font-family: 'Bricolage Grotesque', sans-serif;
             background-color: #fdfcff;
             color: #1e1b4b;
         }
-        
-        [dir="rtl"], [dir="rtl"] body {
+
+        [dir="rtl"],
+        [dir="rtl"] body {
             font-family: 'Cairo', 'Almarai', sans-serif;
         }
 
         .hero-gradient {
             background: radial-gradient(circle at top right, rgba(133, 64, 157, 0.08), transparent),
-                        radial-gradient(circle at bottom left, rgba(238, 167, 39, 0.05), transparent);
+                radial-gradient(circle at bottom left, rgba(238, 167, 39, 0.05), transparent);
         }
 
-        .bg-brand-vivid { background-color: var(--brand-vivid); }
-        .text-brand-vivid { color: var(--brand-vivid); }
-        .bg-brand-deep { background-color: var(--brand-deep); }
-        .text-brand-deep { color: var(--brand-deep); }
-        .bg-brand-accent { background-color: var(--brand-accent); }
-        .text-brand-accent { color: var(--brand-accent); }
-        .bg-brand-highlight { background-color: var(--brand-highlight); }
+        .bg-brand-vivid {
+            background-color: var(--brand-vivid);
+        }
+
+        .text-brand-vivid {
+            color: var(--brand-vivid);
+        }
+
+        .bg-brand-deep {
+            background-color: var(--brand-deep);
+        }
+
+        .text-brand-deep {
+            color: var(--brand-deep);
+        }
+
+        .bg-brand-accent {
+            background-color: var(--brand-accent);
+        }
+
+        .text-brand-accent {
+            color: var(--brand-accent);
+        }
+
+        .bg-brand-highlight {
+            background-color: var(--brand-highlight);
+        }
 
         @media print {
             .no-print {
                 display: none !important;
             }
+
             .resume-paper {
                 box-shadow: none !important;
                 margin: 0 !important;
@@ -54,11 +79,18 @@
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
     </style>
-<script type="importmap">
+    <script type="importmap">
 {
   "imports": {
     "react/": "https://esm.sh/react@^19.2.3/",
@@ -70,8 +102,10 @@
 }
 </script>
 </head>
+
 <body>
     <div id="root"></div>
     <script type="module" src="/index.tsx"></script>
 </body>
+
 </html>

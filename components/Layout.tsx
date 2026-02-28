@@ -3,26 +3,52 @@ import React, { useState, useEffect } from 'react';
 import { FileBadge, Github, Twitter, Languages, LogOut, History, User } from 'lucide-react';
 import { translations, Language } from '../constants/translations';
 import { AuthModal } from './AuthModal';
-import { auth, isFirebaseConfigured } from '../lib/firebase';
+import { auth, db, isFirebaseConfigured } from '../lib/firebase';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { User as FirebaseUser } from 'firebase/auth';
+import { Link, useNavigate } from 'react-router-dom';
 
 interface LayoutProps {
   children: React.ReactNode;
   lang: Language;
   onLanguageChange: (lang: Language) => void;
   onHistoryClick?: () => void;
+  onHomeClick?: () => void;
 }
 
-export const Layout: React.FC<LayoutProps> = ({ children, lang, onLanguageChange, onHistoryClick }) => {
+export const Layout: React.FC<LayoutProps> = ({ children, lang, onLanguageChange, onHistoryClick, onHomeClick }) => {
   const t = translations[lang];
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [user, setUser] = useState<FirebaseUser | null>(null);
+  const [userRole, setUserRole] = useState<string>('individual_user');
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!isFirebaseConfigured) return;
 
-    const unsubscribe = auth.onAuthStateChanged((currentUser) => {
+    const unsubscribe = auth.onAuthStateChanged(async (currentUser) => {
       setUser(currentUser);
+      if (currentUser) {
+        try {
+          const userDocRef = doc(db, 'users', currentUser.uid);
+          const snap = await getDoc(userDocRef);
+          if (snap.exists()) {
+            setUserRole(snap.data().role || 'individual_user');
+          } else {
+            // Register new user in DB
+            await setDoc(userDocRef, {
+              email: currentUser.email,
+              role: 'individual_user',
+              createdAt: new Date().toISOString()
+            });
+            setUserRole('individual_user');
+          }
+        } catch (error) {
+          console.error("Error fetching user role:", error);
+        }
+      } else {
+        setUserRole('individual_user');
+      }
     });
 
     return () => unsubscribe();
@@ -35,10 +61,14 @@ export const Layout: React.FC<LayoutProps> = ({ children, lang, onLanguageChange
   };
 
   const scrollToSection = (id: string) => {
-    const element = document.getElementById(id);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
+    if (onHomeClick) onHomeClick();
+    navigate('/');
+    setTimeout(() => {
+      const element = document.getElementById(id);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+    }, 100);
   };
 
   return (
@@ -48,14 +78,17 @@ export const Layout: React.FC<LayoutProps> = ({ children, lang, onLanguageChange
       <nav className="bg-white border-b border-indigo-50 sticky top-0 z-50 no-print">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-20 items-center">
-            <div className="flex items-center gap-3 cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+            <Link to="/" className="flex items-center gap-3 cursor-pointer" onClick={() => {
+              if (onHomeClick) onHomeClick();
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}>
               <div className="bg-[#4D2B8C] p-2 rounded-xl shadow-lg shadow-indigo-200">
                 <FileBadge className="text-[#FFEF5F] w-7 h-7" />
               </div>
               <span className="text-2xl font-black text-[#4D2B8C] tracking-tight">
                 {t.brand.name}<span className="text-[#EEA727] ml-0.5">{t.brand.suffix}</span>
               </span>
-            </div>
+            </Link>
 
             <div className="flex items-center gap-4 md:gap-8">
               <div className="hidden lg:flex items-center gap-8">
@@ -71,6 +104,20 @@ export const Layout: React.FC<LayoutProps> = ({ children, lang, onLanguageChange
                 >
                   {t.nav.pricing}
                 </button>
+                <Link
+                  to="/blog"
+                  className="text-sm font-bold text-slate-600 hover:text-[#85409D] transition-colors"
+                >
+                  {t.nav.blog}
+                </Link>
+                {user && userRole !== 'individual_user' && (
+                  <Link
+                    to="/admin"
+                    className="text-sm font-bold text-[#85409D] hover:text-[#4D2B8C] transition-colors"
+                  >
+                    Admin Panel
+                  </Link>
+                )}
               </div>
 
               <div className="flex items-center gap-2 border-l border-slate-100 pl-6 h-8">
@@ -130,7 +177,10 @@ export const Layout: React.FC<LayoutProps> = ({ children, lang, onLanguageChange
               {lang === 'en' ? '© 2024. All Rights Reserved.' : '© 2024. جميع الحقوق محفوظة.'}
             </p>
           </div>
-          <div className="flex gap-6">
+          <div className="flex items-center gap-6">
+            <Link to="/privacy-policy" className="text-sm font-bold text-slate-400 hover:text-[#85409D] transition-colors">{t.nav.privacyPolicy}</Link>
+            <Link to="/refund-policy" className="text-sm font-bold text-slate-400 hover:text-[#EEA727] transition-colors">{t.nav.refundPolicy}</Link>
+            <div className="w-px h-4 bg-slate-200 mx-2"></div>
             <Twitter className="w-5 h-5 text-slate-400 cursor-pointer hover:text-[#EEA727] transition-colors" />
             <Github className="w-5 h-5 text-slate-400 cursor-pointer hover:text-[#85409D] transition-colors" />
           </div>

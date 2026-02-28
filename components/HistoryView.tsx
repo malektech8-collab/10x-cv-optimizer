@@ -102,6 +102,7 @@ export const HistoryView: React.FC<HistoryViewProps> = ({ lang, onSelect, onBack
                 </div>
                 <div className="space-y-1 text-start">
                   <h3 className="text-xl font-black text-[#4D2B8C] tracking-tight">{item.original_filename}</h3>
+                  <p className="text-xs font-bold text-slate-500">Order #{item.order_number || item.id.slice(0, 8)}</p>
                   <div className="flex items-center gap-4 text-sm text-slate-400 font-bold">
                     <div className="flex items-center gap-1.5">
                       <Calendar className="w-4 h-4" />

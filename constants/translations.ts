@@ -12,7 +12,10 @@ export const translations = {
       pricing: 'Pricing',
       signIn: 'Sign In',
       signOut: 'Sign Out',
-      history: 'My History'
+      history: 'My History',
+      blog: 'Blog',
+      privacyPolicy: 'Privacy Policy',
+      refundPolicy: 'Refund Policy'
     },
     auth: {
       title: 'Join 10-x CV',
@@ -88,7 +91,10 @@ export const translations = {
       support: 'Support PDF and Images (Max 10MB)',
       select: 'Select File',
       errorType: 'Please upload a PDF or an Image of your resume.',
-      errorSize: 'File is too large. Maximum 10MB.'
+      errorSize: 'File is too large. Maximum 10MB.',
+      targetLang: 'Select Output Language for CV:',
+      english: 'English',
+      arabic: 'Arabic (العربية)',
     },
     preview: {
       title: 'Optimized Resume',
@@ -135,11 +141,14 @@ export const translations = {
       fullName: '10-x محسن السيرة الذاتية'
     },
     nav: {
-      howItWorks: 'كيف يعمل',
+      howItWorks: 'طريقة العمل',
       pricing: 'الأسعار',
       signIn: 'تسجيل الدخول',
       signOut: 'تسجيل الخروج',
-      history: 'سجلاتي'
+      history: 'سجلاتي',
+      blog: 'المدونة',
+      privacyPolicy: 'سياسة الخصوصية',
+      refundPolicy: 'سياسة الاسترداد'
     },
     auth: {
       title: 'انضم إلى 10-x',
@@ -215,7 +224,10 @@ export const translations = {
       support: 'يدعم PDF والصور (بحد أقصى 10 ميجابايت)',
       select: 'اختر ملفاً',
       errorType: 'يرجى رفع ملف PDF أو صورة لسيرتك الذاتية.',
-      errorSize: 'الملف كبير جداً. الحد الأقصى 10 ميجابايت.'
+      errorSize: 'الملف كبير جداً. الحد الأقصى 10 ميجابايت.',
+      targetLang: 'لغة السيرة الذاتية المفضلة (الناتج):',
+      english: 'الإنجليزية (English)',
+      arabic: 'العربية',
     },
     preview: {
       title: 'السيرة الذاتية المحسنة',
