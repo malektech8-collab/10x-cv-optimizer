@@ -1,0 +1,10 @@
+name = "10-x-cv-optimizer"
+main = "dist/index.html"
+compatibility_date = "2024-02-28"
+
+[site]
+bucket = "./dist"
+
+[env.production]
+# Add your custom domain 10-x.online below
+# routes = ["10-x.online/*"]
