@@ -57,7 +57,7 @@ export const FileUpload: React.FC<FileUploadProps> = ({ onFileSelect, isLoading,
   return (
     <div className="w-full max-w-3xl mx-auto" dir={t.dir}>
       <div
-        className={`relative border-[3px] border-dashed rounded-[3rem] p-16 transition-all duration-500 flex flex-col items-center justify-center gap-6 ${dragActive ? 'border-[#85409D] bg-indigo-50/50 scale-[1.02]' : 'border-slate-200 hover:border-[#EEA727] bg-white shadow-2xl shadow-indigo-100/40'
+        className={`relative border-[3px] border-dashed rounded-[2.5rem] sm:rounded-[3rem] p-8 sm:p-16 transition-all duration-500 flex flex-col items-center justify-center gap-6 ${dragActive ? 'border-[#85409D] bg-indigo-50/50 scale-[1.02]' : 'border-slate-200 hover:border-[#EEA727] bg-white shadow-2xl shadow-indigo-100/40'
           } ${isLoading ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
         onDragEnter={onDrag}
         onDragLeave={onDrag}

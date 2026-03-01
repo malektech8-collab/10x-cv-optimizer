@@ -53,8 +53,8 @@ export const BlogPost: React.FC<BlogPostProps> = ({ lang, setLang }) => {
         return (
             <Layout lang={lang} onLanguageChange={setLang}>
                 <div className="max-w-3xl mx-auto py-32 text-center">
-                    <h2 className="text-4xl font-black text-[#4D2B8C]">Post Not Found</h2>
-                    <Link to="/blog" className="text-[#85409D] inline-block mt-4 font-bold hover:underline">Return to Blog</Link>
+                    <h2 className="text-4xl font-black text-[#4D2B8C]">{t.blog.postNotFound}</h2>
+                    <Link to="/blog" className="text-[#85409D] inline-block mt-4 font-bold hover:underline">{t.blog.returnToBlog}</Link>
                 </div>
             </Layout>
         );
@@ -65,9 +65,9 @@ export const BlogPost: React.FC<BlogPostProps> = ({ lang, setLang }) => {
 
     return (
         <Layout lang={lang} onLanguageChange={setLang}>
-            <div className="max-w-4xl mx-auto py-16 px-4 space-y-8 animate-fade-in" dir={t.dir}>
+            <div className="max-w-4xl mx-auto py-8 sm:py-16 px-4 space-y-8 animate-fade-in" dir={t.dir}>
                 <Link to="/blog" className="inline-flex items-center gap-2 text-slate-500 font-bold hover:text-[#4D2B8C] transition-colors">
-                    <ArrowLeft className={`w-5 h-5 ${lang === 'ar' ? 'rotate-180' : ''}`} /> Back to Blog
+                    <ArrowLeft className={`w-5 h-5 ${lang === 'ar' ? 'rotate-180' : ''}`} /> {t.blog.backToBlog}
                 </Link>
 
                 <div className="space-y-6">
@@ -75,11 +75,11 @@ export const BlogPost: React.FC<BlogPostProps> = ({ lang, setLang }) => {
                         <Clock className="w-4 h-4" />
                         {new Date(post.createdAt).toLocaleDateString(lang === 'ar' ? 'ar-SA' : 'en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
                     </div>
-                    <h1 className="text-5xl md:text-6xl font-black text-[#4D2B8C] tracking-tight leading-tight">{title}</h1>
+                    <h1 className="text-3xl sm:text-5xl md:text-6xl font-black text-[#4D2B8C] tracking-tight leading-tight">{title}</h1>
                 </div>
 
                 {post.imageUrl && (
-                    <div className="w-full h-80 md:h-[400px] rounded-[2.5rem] overflow-hidden shadow-2xl relative">
+                    <div className="w-full h-56 sm:h-80 md:h-[400px] rounded-[1.5rem] sm:rounded-[2.5rem] overflow-hidden shadow-2xl relative">
                         <img src={post.imageUrl} alt={title} className="w-full h-full object-cover" />
                     </div>
                 )}

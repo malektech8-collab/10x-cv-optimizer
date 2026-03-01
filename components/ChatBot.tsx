@@ -110,7 +110,7 @@ export const ChatBot: React.FC<ChatBotProps> = ({ lang }) => {
             {/* Floating Action Button */}
             <button
                 onClick={() => setIsOpen(true)}
-                className={`fixed ${lang === 'ar' ? 'left-6' : 'right-6'} bottom-6 h-14 bg-[#85409D] hover:bg-[#4D2B8C] text-white rounded-full flex items-center shadow-lg shadow-purple-500/30 transition-all hover:-translate-y-1 z-50 group no-print px-6 gap-3 ${isOpen ? 'scale-0 opacity-0' : 'scale-100 opacity-100 duration-300'}`}
+                className={`fixed ${lang === 'ar' ? 'left-6' : 'right-6'} bottom-20 h-14 bg-[#85409D] hover:bg-[#4D2B8C] text-white rounded-full flex items-center shadow-lg shadow-purple-500/30 transition-all hover:-translate-y-1 z-50 group no-print px-6 gap-3 ${isOpen ? 'scale-0 opacity-0' : 'scale-100 opacity-100 duration-300'}`}
                 aria-label="Open Chatbot"
             >
                 <div className="relative">
@@ -119,13 +119,13 @@ export const ChatBot: React.FC<ChatBotProps> = ({ lang }) => {
                     <div className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-[#EEA727] rounded-full border-2 border-[#85409D] group-hover:border-[#4D2B8C] transition-colors"></div>
                 </div>
                 <span className="font-black text-sm tracking-wide">
-                    {lang === 'en' ? 'Career Consultant AI' : 'المستشار المهني (الذكاء الاصطناعي)'}
+                    {lang === 'en' ? 'Career Consultant' : 'المستشار المهني'}
                 </span>
             </button>
 
             {/* Chat Window */}
             <div
-                className={`fixed ${lang === 'ar' ? 'left-6' : 'right-6'} bottom-6 w-[360px] max-w-[calc(100vw-3rem)] h-[550px] max-h-[80vh] bg-white rounded-3xl shadow-2xl flex flex-col overflow-hidden transition-all duration-300 transform origin-bottom z-50 border border-slate-100 no-print ${isOpen ? 'scale-100 opacity-100 translate-y-0' : 'scale-95 opacity-0 translate-y-10 pointer-events-none'}`}
+                className={`fixed ${lang === 'ar' ? 'left-6' : 'right-6'} bottom-20 w-[360px] max-w-[calc(100vw-3rem)] h-[550px] max-h-[80vh] bg-white rounded-3xl shadow-2xl flex flex-col overflow-hidden transition-all duration-300 transform origin-bottom z-50 border border-slate-100 no-print ${isOpen ? 'scale-100 opacity-100 translate-y-0' : 'scale-95 opacity-0 translate-y-10 pointer-events-none'}`}
                 dir={lang === 'ar' ? 'rtl' : 'ltr'}
             >
                 {/* Chat Header */}

@@ -26,28 +26,28 @@ export const AnalysisView: React.FC<AnalysisViewProps> = ({ report, onOptimize, 
                     <FileText className="w-4 h-4" />
                     <span>Resume Analysis Complete</span>
                 </div>
-                <h2 className="text-5xl md:text-6xl font-black text-[#4D2B8C] tracking-tight">Here is your <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#85409D] to-[#EEA727]">ATS Report</span></h2>
-                <p className="text-xl text-slate-500 max-w-2xl mx-auto font-medium">
+                <h2 className="text-3xl sm:text-5xl md:text-6xl font-black text-[#4D2B8C] tracking-tight px-4 leading-tight">Here is your <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#85409D] to-[#EEA727]">ATS Report</span></h2>
+                <p className="text-base sm:text-xl text-slate-500 max-w-2xl mx-auto font-medium px-4">
                     We analyzed your resume against thousands of successful candidates. Here's what we found.
                 </p>
             </div>
 
-            <div className="bg-white rounded-[3rem] p-10 border border-slate-100 shadow-2xl shadow-indigo-100/40">
+            <div className="bg-white rounded-[2rem] sm:rounded-[3rem] p-6 sm:p-10 border border-slate-100 shadow-2xl shadow-indigo-100/40">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-12 items-center">
 
                     {/* Score Circle */}
                     <div className="flex flex-col items-center space-y-4">
-                        <div className="relative w-48 h-48 flex items-center justify-center">
+                        <div className="relative w-40 h-40 sm:w-48 sm:h-48 flex items-center justify-center">
                             <svg className="absolute w-full h-full transform -rotate-90">
-                                <circle cx="96" cy="96" r="88" stroke="currentColor" strokeWidth="12" fill="transparent" className="text-slate-100" />
-                                <circle cx="96" cy="96" r="88" stroke="currentColor" strokeWidth="12" fill="transparent" strokeDasharray={2 * Math.PI * 88} strokeDashoffset={(2 * Math.PI * 88) * (1 - report.score / 100)} className={`${scoreColor} transition-all duration-1000 ease-out`} strokeLinecap="round" />
+                                <circle cx="80" cy="80" r="72" stroke="currentColor" strokeWidth="10" fill="transparent" className="text-slate-100" />
+                                <circle cx="80" cy="80" r="72" stroke="currentColor" strokeWidth="10" fill="transparent" strokeDasharray={2 * Math.PI * 72} strokeDashoffset={(2 * Math.PI * 72) * (1 - report.score / 100)} className={`${scoreColor} transition-all duration-1000 ease-out`} strokeLinecap="round" />
                             </svg>
                             <div className="text-center">
-                                <span className={`text-6xl font-black ${scoreColor}`}>{report.score}</span>
-                                <span className="text-xl font-bold text-slate-400 block -mt-2">/100</span>
+                                <span className={`text-5xl sm:text-6xl font-black ${scoreColor}`}>{report.score}</span>
+                                <span className="text-lg sm:text-xl font-bold text-slate-400 block -mt-1 sm:-mt-2">/100</span>
                             </div>
                         </div>
-                        <div className={`px-4 py-1.5 rounded-full ${scoreBg} ${scoreColor} text-sm font-black tracking-wide uppercase`}>
+                        <div className={`px-4 py-1.5 rounded-full ${scoreBg} ${scoreColor} text-[10px] sm:text-sm font-black tracking-wide uppercase`}>
                             ATS Compatibility: {report.atsCompatibility}
                         </div>
                     </div>
@@ -87,7 +87,7 @@ export const AnalysisView: React.FC<AnalysisViewProps> = ({ report, onOptimize, 
             </div>
 
             {/* Call to Action */}
-            <div className="bg-gradient-to-br from-[#4D2B8C] to-[#85409D] p-12 rounded-[3xl] text-white text-center space-y-8 shadow-2xl relative overflow-hidden">
+            <div className="bg-gradient-to-br from-[#4D2B8C] to-[#85409D] p-8 sm:p-12 rounded-[2rem] sm:rounded-[3xl] text-white text-center space-y-8 shadow-2xl relative overflow-hidden">
                 <div className="absolute top-0 left-0 w-full h-full bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
                 <div className="relative z-10 space-y-6">
                     <div className="bg-[#FFEF5F]/20 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -113,9 +113,9 @@ export const AnalysisView: React.FC<AnalysisViewProps> = ({ report, onOptimize, 
 
                     <button
                         onClick={onOptimize}
-                        className="mt-4 px-12 py-5 bg-[#EEA727] text-white rounded-[2rem] font-black text-xl hover:bg-[#FFEF5F] hover:text-[#4D2B8C] hover:-translate-y-1 transition-all shadow-xl shadow-orange-500/30 flex items-center justify-center gap-3 mx-auto"
+                        className="mt-4 px-8 sm:px-12 py-4 sm:py-5 bg-[#EEA727] text-white rounded-[1.5rem] sm:rounded-[2rem] font-black text-lg sm:text-xl hover:bg-[#FFEF5F] hover:text-[#4D2B8C] hover:-translate-y-1 transition-all shadow-xl shadow-orange-500/30 flex items-center justify-center gap-3 mx-auto"
                     >
-                        {lang === 'en' ? 'Optimize My Resume Now' : 'حسن سيرتي الذاتية الآن'} <Sparkles className="w-6 h-6" />
+                        {lang === 'en' ? 'Optimize Now' : 'حسن الآن'} <Sparkles className="w-5 h-5 sm:w-6 sm:h-6" />
                     </button>
                 </div>
             </div>

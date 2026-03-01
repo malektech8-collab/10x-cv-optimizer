@@ -3,9 +3,9 @@ export const translations = {
   en: {
     dir: 'ltr',
     brand: {
-      name: '10-x',
-      suffix: 'CV',
-      fullName: '10-x CV Optimizer'
+      name: '10X',
+      suffix: 'Resume Optimizer',
+      fullName: '10X Resume Optimizer'
     },
     nav: {
       howItWorks: 'How it works',
@@ -15,7 +15,10 @@ export const translations = {
       history: 'My History',
       blog: 'Blog',
       privacyPolicy: 'Privacy Policy',
-      refundPolicy: 'Refund Policy'
+      refundPolicy: 'Refund Policy',
+      support: 'Support',
+      adminPanel: 'Admin Panel',
+      announcement: 'Free for a limited time!'
     },
     auth: {
       title: 'Join 10-x CV',
@@ -40,10 +43,10 @@ export const translations = {
       view: 'View Resume'
     },
     hero: {
-      badge: 'Next-Gen 10-x ATS Optimizer',
+      badge: 'Next-Gen 10X ATS Optimizer',
       title: 'Beat the Bots.',
       titleAccent: 'Land the Interview.',
-      subtitle: 'Our AI rewrites your resume for maximum impact and 100% ATS compatibility. Same language, better structure, higher success.',
+      subtitle: 'Turn Your CV Into a Hiring Magnet.',
     },
     features: [
       {
@@ -65,22 +68,22 @@ export const translations = {
       steps: [
         { title: '1. Upload Resume', desc: 'Upload your current resume as a PDF or high-quality image. We\'ll extract the core information instantly.' },
         { title: '2. AI Optimization', desc: 'Our Gemini-powered engine rewrites your content to match top-tier industry standards and ATS algorithms.' },
-        { title: '3. Download & Apply', desc: 'Preview your high-impact resume, print it to PDF, and start applying to your dream roles with confidence.' },
+        { title: '3. Download & Apply', desc: 'Preview your high-impact resume, download it as PDF, and start applying to your dream roles with confidence.' },
       ]
     },
     pricing: {
       title: 'Professional Plan',
-      subtitle: 'Everything you need to succeed.',
-      price: '39',
-      currency: 'SAR',
-      per: 'Per Resume Optimization',
+      subtitle: 'Free for a limited time.',
+      price: '0',
+      currency: 'Free',
+      per: 'Try it now',
       features: [
         'Full ATS Optimization',
         'Action-Oriented Content Rewrite',
         'Clean, Parseable HTML Structure',
         'Lifetime Storage & Updates',
         'Arabic & English Support',
-        'Print-Ready 0.5-inch Margin Layout'
+        'Download-Ready 0.5-inch Margin Layout'
       ],
       button: 'Get Started Now',
       footer: 'One-time payment. No subscription.'
@@ -98,19 +101,19 @@ export const translations = {
     },
     preview: {
       title: 'Optimized Resume',
-      unlock: 'Unlock via Paymob (39 SAR)',
+      unlock: 'Unlock for Free (Limited Time)',
       copyText: 'Copy Text',
       copyHtml: 'Source',
       download: 'HTML',
-      print: 'Print to PDF',
+      print: 'Download PDF',
       restart: 'Restart',
       copied: 'Copied!',
       readyTitle: 'Resume Analysis Complete',
-      readyPrice: '39 SAR One-time Payment',
-      readyDesc: 'Your resume has been rewritten with ATS-optimized keywords. Pay via Paymob to unlock the full high-impact version.',
-      proceed: 'Proceed to Payment',
-      exportNoteTitle: 'Professional PDF Export',
-      exportNoteDesc: 'When the print window opens, select "Save as PDF" as the destination. Ensure Margins are set to None for the best 0.5-inch optimized layout.'
+      readyPrice: 'FREE (Limited Time Offer)',
+      readyDesc: 'Your resume has been completely rewritten with ATS-optimized keywords. Unlock the full high-impact version for free today.',
+      proceed: 'Unlock My Resume Now',
+      exportNoteTitle: 'Professional PDF Download',
+      exportNoteDesc: 'Your resume is optimized for 0.5-inch margins. If using the browser print fallback, ensure Margins are set to None for the best layout.'
     },
     payment: {
       title: 'Secure Checkout',
@@ -131,14 +134,39 @@ export const translations = {
       analyzing: 'Our AI is analyzing your experience and rewriting for impact.',
       error: 'Something went wrong',
       tryAgain: 'Try Again'
+    },
+    contact: {
+      title: 'Support & Feedback',
+      subtitle: 'Need help? Send us a message and we will get back to you soon.',
+      name: 'Full Name',
+      email: 'Email Address',
+      subject: 'Subject',
+      message: 'Your Message',
+      send: 'Send Message',
+      success: 'Message Sent!',
+      successDesc: 'Thank you for contacting us. We will get back to you shortly.',
+      error: 'Failed to send message.',
+      errorDesc: 'Please try again later or contact us directly at support@10-x.online'
+    },
+    blog: {
+      title: 'Our',
+      titleAccent: 'Blog',
+      subtitle: 'Tips, tricks, and industry secrets to beat the ATS and land your dream job.',
+      badge: 'Career Resources',
+      noPosts: 'No Articles Yet',
+      noPostsDesc: 'Check back soon for new content!',
+      readMore: 'Read More',
+      backToBlog: 'Back to Blog',
+      postNotFound: 'Post Not Found',
+      returnToBlog: 'Return to Blog'
     }
   },
   ar: {
     dir: 'rtl',
     brand: {
-      name: '10-x',
-      suffix: 'سيرة',
-      fullName: '10-x محسن السيرة الذاتية'
+      name: '10X',
+      suffix: 'محسن السيرة الذاتية',
+      fullName: '10X محسن السيرة الذاتية'
     },
     nav: {
       howItWorks: 'طريقة العمل',
@@ -148,7 +176,10 @@ export const translations = {
       history: 'سجلاتي',
       blog: 'المدونة',
       privacyPolicy: 'سياسة الخصوصية',
-      refundPolicy: 'سياسة الاسترداد'
+      refundPolicy: 'سياسة الاسترداد',
+      support: 'الدعم',
+      adminPanel: 'لوحة التحكم',
+      announcement: 'مجاني لفترة محدودة!'
     },
     auth: {
       title: 'انضم إلى 10-x',
@@ -173,10 +204,10 @@ export const translations = {
       view: 'عرض السيرة'
     },
     hero: {
-      badge: 'الجيل القادم من محسنات الـ ATS - 10-x',
+      badge: 'الجيل القادم من محسنات الـ ATS - 10X',
       title: 'تجاوز الأنظمة الآلية.',
       titleAccent: 'احصل على المقابلة.',
-      subtitle: 'يقوم الذكاء الاصطناعي لدينا بإعادة كتابة سيرتك الذاتية لتحقيق أقصى تأثير وتوافق بنسبة 100٪ مع أنظمة ATS. نفس اللغة، هيكل أفضل، نجاح أكبر.',
+      subtitle: 'حول سيرتك الذاتية إلى مغناطيس للتوظيف.',
     },
     features: [
       {
@@ -198,22 +229,22 @@ export const translations = {
       steps: [
         { title: '1. رفع السيرة الذاتية', desc: 'ارفع سيرتك الذاتية الحالية كملف PDF أو صورة عالية الجودة. سنقوم باستخراج المعلومات الأساسية فوراً.' },
         { title: '2. تحسين بالذكاء الاصطناعي', desc: 'يقوم محركنا المدعوم بـ Gemini بإعادة كتابة محتواك ليتناسب مع معايير الصناعة وخوارزميات ATS.' },
-        { title: '3. تحميل وتقديم', desc: 'عاين سيرتك الذاتية، اطبعها بصيغة PDF، وابدأ في التقديم على الوظائف التي تحلم بها بكل ثقة.' },
+        { title: '3. تحميل وتقديم', desc: 'عاين سيرتك الذاتية، حملها بصيغة PDF، وابدأ في التقديم على الوظائف التي تحلم بها بكل ثقة.' },
       ]
     },
     pricing: {
       title: 'الخطة الاحترافية',
-      subtitle: 'كل ما تحتاجه للنجاح.',
-      price: '39',
-      currency: 'ر.س',
-      per: 'لكل عملية تحسين سيرة ذاتية',
+      subtitle: 'مجاني لفترة محدودة.',
+      price: '0',
+      currency: 'مجاني',
+      per: 'جربه الآن',
       features: [
         'تحسين كامل لأنظمة ATS',
         'إعادة كتابة المحتوى للتركيز على الإنجازات',
         'هيكل HTML نظيف وقابل للتحليل',
         'تخزين وتحديثات مدى الحياة',
         'دعم اللغتين العربية والإنجليزية',
-        'تخطيط جاهز للطباعة بهوامش 0.5 إنش'
+        'تخطيط جاهز للتحميل بهوامش 0.5 إنش'
       ],
       button: 'ابدأ الآن',
       footer: 'دفع لمرة واحدة. لا يوجد اشتراك شهري.'
@@ -231,19 +262,19 @@ export const translations = {
     },
     preview: {
       title: 'السيرة الذاتية المحسنة',
-      unlock: 'فتح عبر Paymob (39 ر.س)',
+      unlock: 'افتح مجاناً (لفترة محدودة)',
       copyText: 'نسخ النص',
       copyHtml: 'المصدر',
       download: 'HTML',
-      print: 'طباعة PDF',
+      print: 'تحميل PDF',
       restart: 'البدء من جديد',
       copied: 'تم النسخ!',
       readyTitle: 'تحليل السيرة الذاتية اكتمل',
-      readyPrice: '39 ر.س دفع لمرة واحدة',
-      readyDesc: 'تمت إعادة كتابة سيرتك الذاتية باستخدام كلمات مفتاحية محسنة للـ ATS. ادفع عبر Paymob لفتح النسخة الكاملة.',
-      proceed: 'المتابعة للدفع',
-      exportNoteTitle: 'تصدير PDF احترافي',
-      exportNoteDesc: 'عند فتح نافذة الطباعة، اختر "Save as PDF" كوجهة. تأكد من ضبط الهوامش (Margins) على "None" للحصول على أفضل تخطيط.'
+      readyPrice: 'مجاني (عرض لفترة محدودة)',
+      readyDesc: 'تمت إعادة كتابة سيرتك الذاتية بكلمات مفتاحية محسنة لأنظمة ATS. افتح النسخة الكاملة عالية التأثير مجاناً اليوم.',
+      proceed: 'افتح سيرتي الذاتية الآن',
+      exportNoteTitle: 'تحميل PDF احترافي',
+      exportNoteDesc: 'سيرتك الذاتية محسنة بهوامش 0.5 إنش. في حال استخدام خيار الطباعة، تأكد من ضبط الهوامش (Margins) على "None" للحصول على أفضل تخطيط.'
     },
     payment: {
       title: 'دفع آمن',
@@ -264,6 +295,31 @@ export const translations = {
       analyzing: 'يقوم الذكاء الاصطناعي بتحليل خبراتك وإعادة كتابتها للتأثير.',
       error: 'حدث خطأ ما',
       tryAgain: 'حاول مرة أخرى'
+    },
+    contact: {
+      title: 'الدعم والملاحظات',
+      subtitle: 'تحتاج مساعدة؟ أرسل لنا رسالة وسنقوم بالرد عليك في أقرب وقت.',
+      name: 'الاسم الكامل',
+      email: 'البريد الإلكتروني',
+      subject: 'الموضوع',
+      message: 'رسالتك',
+      send: 'إرسال الرسالة',
+      success: 'تم إرسال الرسالة!',
+      successDesc: 'شكراً لتواصلك معنا. سنقوم بالرد عليك قريباً.',
+      error: 'فشل إرسال الرسالة.',
+      errorDesc: 'يرجى المحاولة مرة أخرى لاحقاً أو التواصل معنا مباشرة عبر support@10-x.online'
+    },
+    blog: {
+      title: 'مدونتنا',
+      titleAccent: 'المهنية',
+      subtitle: 'نصائح وأسرار الصناعة لتجاوز أنظمة الـ ATS والحصول على وظيفة أحلامك.',
+      badge: 'مصادر مهنية',
+      noPosts: 'لا توجد مقالات بعد',
+      noPostsDesc: 'تحقق مرة أخرى قريباً لمحتوى جديد!',
+      readMore: 'اقرأ المزيد',
+      backToBlog: 'العودة للمدونة',
+      postNotFound: 'المقال غير موجود',
+      returnToBlog: 'العودة للمدونة'
     }
   }
 };

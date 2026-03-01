@@ -68,9 +68,9 @@ export const HistoryView: React.FC<HistoryViewProps> = ({ lang, onSelect, onBack
 
   return (
     <div className="max-w-4xl mx-auto py-12 px-4 space-y-12 animate-fade-in" dir={t.dir}>
-      <div className="flex items-center justify-between border-b border-slate-100 pb-8">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between border-b border-slate-100 pb-8 gap-6">
         <div className="space-y-2">
-          <h2 className="text-5xl font-black text-[#4D2B8C] tracking-tight">{t.history.title}</h2>
+          <h2 className="text-3xl sm:text-5xl font-black text-[#4D2B8C] tracking-tight">{t.history.title}</h2>
           <p className="text-slate-500 font-bold">{history.length} Saved Resumes</p>
         </div>
         <button
@@ -83,38 +83,38 @@ export const HistoryView: React.FC<HistoryViewProps> = ({ lang, onSelect, onBack
       </div>
 
       {history.length === 0 ? (
-        <div className="text-center py-20 bg-white rounded-[3rem] border border-slate-100 shadow-xl shadow-indigo-100/30">
-          <div className="bg-slate-50 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
-            <FileText className="w-10 h-10 text-slate-300" />
+        <div className="text-center py-20 bg-white rounded-[2rem] sm:rounded-[3rem] border border-slate-100 shadow-xl shadow-indigo-100/30">
+          <div className="bg-slate-50 w-16 h-16 sm:w-20 sm:h-20 rounded-full flex items-center justify-center mx-auto mb-6">
+            <FileText className="w-8 h-8 sm:w-10 sm:h-10 text-slate-300" />
           </div>
-          <p className="text-xl font-bold text-slate-400">{t.history.empty}</p>
+          <p className="text-lg sm:text-xl font-bold text-slate-400 px-4">{t.history.empty}</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 gap-6">
           {history.map((item) => (
             <div
               key={item.id}
-              className="bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-xl shadow-indigo-100/20 flex flex-col md:flex-row items-center justify-between gap-8 hover:border-[#85409D]/30 transition-all group"
+              className="bg-white p-6 sm:p-8 rounded-[1.5rem] sm:rounded-[2.5rem] border border-slate-100 shadow-xl shadow-indigo-100/20 flex flex-col md:flex-row items-center md:items-start lg:items-center justify-between gap-6 sm:gap-8 hover:border-[#85409D]/30 transition-all group"
             >
-              <div className="flex items-center gap-6">
-                <div className="bg-indigo-50 p-5 rounded-2xl group-hover:bg-[#4D2B8C] group-hover:text-[#FFEF5F] transition-all">
-                  <FileText className="w-8 h-8" />
+              <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-6 w-full md:w-auto">
+                <div className="bg-indigo-50 p-4 sm:p-5 rounded-xl sm:rounded-2xl group-hover:bg-[#4D2B8C] group-hover:text-[#FFEF5F] transition-all">
+                  <FileText className="w-6 h-6 sm:w-8 sm:h-8" />
                 </div>
-                <div className="space-y-1 text-start">
-                  <h3 className="text-xl font-black text-[#4D2B8C] tracking-tight">{item.original_filename}</h3>
-                  <p className="text-xs font-bold text-slate-500">Order #{item.order_number || item.id.slice(0, 8)}</p>
-                  <div className="flex items-center gap-4 text-sm text-slate-400 font-bold">
+                <div className="space-y-1 text-center sm:text-start flex-grow">
+                  <h3 className="text-lg sm:text-xl font-black text-[#4D2B8C] tracking-tight">{item.original_filename}</h3>
+                  <p className="text-[10px] font-bold text-slate-500">Order #{item.order_number || item.id.slice(0, 8)}</p>
+                  <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-4 text-xs sm:text-sm text-slate-400 font-bold mt-2">
                     <div className="flex items-center gap-1.5">
-                      <Calendar className="w-4 h-4" />
+                      <Calendar className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                       {new Date(item.created_at).toLocaleDateString(lang === 'ar' ? 'ar-SA' : 'en-US')}
                     </div>
                     <div className="flex items-center gap-1.5">
                       {item.is_paid ? (
-                        <CheckCircle2 className="w-4 h-4 text-green-500" />
+                        <CheckCircle2 className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-green-500" />
                       ) : (
-                        <Lock className="w-4 h-4 text-[#EEA727]" />
+                        <Lock className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#EEA727]" />
                       )}
-                      <span className={item.is_paid ? 'text-green-600' : 'text-[#EEA727]'}>
+                      <span className={item.is_paid ? 'text-green-600' : 'text-[#EEA727] text-[10px] sm:text-sm'}>
                         {item.is_paid ? t.history.paid : t.history.unpaid}
                       </span>
                     </div>

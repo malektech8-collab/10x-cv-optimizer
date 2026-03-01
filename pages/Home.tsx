@@ -9,7 +9,7 @@ import { optimizeResume, analyzeResume } from '../services/geminiService';
 import { AnalysisView } from '../components/AnalysisView';
 import { translations, Language } from '../constants/translations';
 import { auth, db, isFirebaseConfigured } from '../lib/firebase';
-import { collection, addDoc, updateDoc, query, where, getDocs, doc } from 'firebase/firestore';
+import { collection, addDoc, updateDoc, query, where, getDocs, doc, orderBy } from 'firebase/firestore';
 import { Loader2, Sparkles, Wand2, ShieldCheck, Zap, ArrowRight, CheckCircle2, FileUp, Cpu, Download } from 'lucide-react';
 
 interface HomeProps {
@@ -70,6 +70,30 @@ export const Home: React.FC<HomeProps> = ({ lang, setLang }) => {
     setStatus(AppStatus.PROCESSING);
     setError(null);
     try {
+      // Check if we already have a recent optimization for this file to save quota
+      if (isFirebaseConfigured) {
+        const user = auth.currentUser;
+        if (user) {
+          const qRecent = query(
+            collection(db, 'optimizations'),
+            where('user_id', '==', user.uid),
+            where('original_filename', '==', currentFilename),
+            orderBy('created_at', 'desc')
+          );
+          const querySnapshot = await getDocs(qRecent);
+
+          if (!querySnapshot.empty) {
+            const existingDoc = querySnapshot.docs[0].data();
+            setOptimizedHtml(existingDoc.html_content);
+            setCurrentOptimizationId(querySnapshot.docs[0].id);
+            setIsPaid(existingDoc.is_paid || true);
+            setStatus(AppStatus.COMPLETED);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            return; // Exit early, no need to call Gemini
+          }
+        }
+      }
+
       const html = await optimizeResume(fileBase64, fileType, targetLang, userComments);
       setOptimizedHtml(html);
 
@@ -154,19 +178,19 @@ export const Home: React.FC<HomeProps> = ({ lang, setLang }) => {
       ) : (
         <>
           {status === AppStatus.IDLE && (
-            <section className="pt-24 pb-16 px-4 no-print hero-gradient">
-              <div className="max-w-4xl mx-auto text-center space-y-8 animate-fade-in">
-                <div className="inline-flex items-center gap-2 px-5 py-2 bg-[#FFEF5F]/30 text-[#4D2B8C] rounded-full text-xs font-black uppercase tracking-widest border border-[#EEA727]/20 shadow-sm">
-                  <Sparkles className="w-4 h-4 text-[#EEA727]" />
+            <section className="pt-16 sm:pt-24 pb-12 sm:pb-16 px-4 no-print hero-gradient overflow-hidden">
+              <div className="max-w-4xl mx-auto text-center space-y-6 sm:space-y-8 animate-fade-in relative">
+                <div className="inline-flex items-center gap-2 px-4 py-1.5 sm:px-5 sm:py-2 bg-[#FFEF5F]/30 text-[#4D2B8C] rounded-full text-[10px] sm:text-xs font-black uppercase tracking-widest border border-[#EEA727]/20 shadow-sm">
+                  <Sparkles className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#EEA727]" />
                   <span>{t.hero.badge}</span>
                 </div>
-                <h1 className="text-6xl md:text-8xl font-black text-[#4D2B8C] tracking-tight leading-[0.9]">
+                <h1 className="text-4xl sm:text-6xl md:text-8xl font-black text-[#4D2B8C] tracking-tight leading-[1] md:leading-[0.9]">
                   {t.hero.title} <br />
                   <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#85409D] to-[#EEA727]">
                     {t.hero.titleAccent}
                   </span>
                 </h1>
-                <p className="text-xl text-slate-600 max-w-2xl mx-auto font-medium leading-relaxed">
+                <p className="text-base sm:text-xl text-slate-600 max-w-2xl mx-auto font-medium leading-relaxed px-4">
                   {t.hero.subtitle}
                 </p>
               </div>
@@ -185,15 +209,15 @@ export const Home: React.FC<HomeProps> = ({ lang, setLang }) => {
                     onTargetLangChange={setTargetLang}
                   />
 
-                  <div className="mt-24 grid grid-cols-1 md:grid-cols-3 gap-8 no-print">
+                  <div className="mt-12 sm:mt-24 grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 no-print">
                     {t.features.map((feature, idx) => (
-                      <div key={idx} className="bg-white p-10 rounded-[2.5rem] border border-slate-100 shadow-2xl shadow-indigo-100/40 flex flex-col gap-6 hover:border-[#EEA727]/30 transition-all group cursor-default">
-                        <div className={`p-5 rounded-2xl w-fit transition-transform group-hover:scale-110 duration-300 ${idx === 0 ? 'bg-indigo-50 text-[#4D2B8C]' : idx === 1 ? 'bg-[#FFEF5F]/20 text-[#EEA727]' : 'bg-purple-50 text-[#85409D]'}`}>
-                          {idx === 0 ? <ShieldCheck className="w-8 h-8" /> : idx === 1 ? <Zap className="w-8 h-8" /> : <Wand2 className="w-8 h-8" />}
+                      <div key={idx} className="bg-white p-8 sm:p-10 rounded-[2rem] sm:rounded-[2.5rem] border border-slate-100 shadow-xl shadow-indigo-100/40 flex flex-col gap-4 sm:gap-6 hover:border-[#EEA727]/30 transition-all group cursor-default">
+                        <div className={`p-4 sm:p-5 rounded-2xl w-fit transition-transform group-hover:scale-110 duration-300 ${idx === 0 ? 'bg-indigo-50 text-[#4D2B8C]' : idx === 1 ? 'bg-[#FFEF5F]/20 text-[#EEA727]' : 'bg-purple-50 text-[#85409D]'}`}>
+                          {idx === 0 ? <ShieldCheck className="w-7 h-7 sm:w-8 sm:h-8" /> : idx === 1 ? <Zap className="w-7 h-7 sm:w-8 sm:h-8" /> : <Wand2 className="w-7 h-7 sm:w-8 sm:h-8" />}
                         </div>
-                        <div className="space-y-3">
-                          <h3 className="font-black text-2xl text-[#4D2B8C] tracking-tight">{feature.title}</h3>
-                          <p className="text-slate-500 text-sm leading-relaxed font-bold">{feature.desc}</p>
+                        <div className="space-y-2 sm:space-y-3">
+                          <h3 className="font-black text-xl sm:text-2xl text-[#4D2B8C] tracking-tight">{feature.title}</h3>
+                          <p className="text-slate-500 text-xs sm:text-sm leading-relaxed font-bold">{feature.desc}</p>
                         </div>
                       </div>
                     ))}
@@ -232,9 +256,8 @@ export const Home: React.FC<HomeProps> = ({ lang, setLang }) => {
                       </div>
                       <div className="p-12">
                         <div className="text-center mb-12">
-                          <div className="flex items-baseline justify-center gap-3">
-                            <span className="text-8xl font-black text-[#4D2B8C] tracking-tighter">{t.pricing.price}</span>
-                            <span className="text-3xl font-black text-[#EEA727]">{t.pricing.currency}</span>
+                          <div className="flex items-center justify-center gap-3">
+                            <span className="text-7xl sm:text-8xl font-black text-[#4D2B8C] tracking-tighter uppercase">{t.pricing.currency}</span>
                           </div>
                           <p className="text-slate-400 font-black uppercase tracking-[0.2em] text-xs mt-6">{t.pricing.per}</p>
                         </div>
