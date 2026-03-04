@@ -1,7 +1,9 @@
 
 import React, { useState } from 'react';
-import { X, ShieldCheck, CreditCard, Loader2, CheckCircle2 } from 'lucide-react';
+import { X, ShieldCheck, CreditCard, Loader2, CheckCircle2, AlertCircle } from 'lucide-react';
 import { translations, Language } from '../constants/translations';
+import { httpsCallable } from 'firebase/functions';
+import { functions } from '../lib/firebase';
 
 interface PaymentModalProps {
   isOpen: boolean;
@@ -10,11 +12,13 @@ interface PaymentModalProps {
   amount: number;
   currency: string;
   lang: Language;
+  optimizationId?: string;
 }
 
-export const PaymentModal: React.FC<PaymentModalProps> = ({ isOpen, onClose, onSuccess, amount, currency, lang }) => {
+export const PaymentModal: React.FC<PaymentModalProps> = ({ isOpen, onClose, onSuccess, amount, currency, lang, optimizationId }) => {
   const t = translations[lang];
-  const [step, setStep] = useState<'details' | 'processing' | 'success'>('details');
+  const [step, setStep] = useState<'details' | 'processing' | 'success' | 'error'>('details');
+  const [error, setError] = useState<string>('');
   const [formData, setFormData] = useState({
     cardNumber: '',
     expiry: '',
@@ -24,18 +28,39 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({ isOpen, onClose, onS
 
   if (!isOpen) return null;
 
-  const handlePay = (e: React.FormEvent) => {
+  const handlePay = async (e: React.FormEvent) => {
     e.preventDefault();
     setStep('processing');
-    
-    // Simulate Paymob transaction processing
-    setTimeout(() => {
-      setStep('success');
-      setTimeout(() => {
-        onSuccess();
-        onClose();
-      }, 2000);
-    }, 2500);
+    setError('');
+
+    try {
+      // Call Cloud Function to initiate Paymob payment
+      const initiatePayment = httpsCallable(functions, 'initiatePayment');
+      const response = await initiatePayment({
+        amount: amount * 100, // Paymob expects amount in cents
+        cardNumber: formData.cardNumber.replace(/\s/g, ''),
+        expiryMonth: formData.expiry.split('/')[0],
+        expiryYear: `20${formData.expiry.split('/')[1]}`,
+        cvv: formData.cvv,
+        cardholderName: formData.name,
+        optimizationId: optimizationId,
+        language: lang
+      });
+
+      // If successful, mark as paid and complete
+      if ((response.data as any).success) {
+        setStep('success');
+        setTimeout(() => {
+          onSuccess();
+          onClose();
+        }, 2000);
+      } else {
+        throw new Error((response.data as any).message || 'Payment processing failed');
+      }
+    } catch (err: any) {
+      setError(err.message || 'An error occurred during payment processing. Please try again.');
+      setStep('error');
+    }
   };
 
   const formattedButton = t.payment.button
@@ -165,6 +190,28 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({ isOpen, onClose, onS
                 <h3 className="text-4xl font-black text-slate-900 tracking-tight">{t.payment.success}</h3>
                 <p className="text-slate-500 text-xl font-bold">{t.payment.successDesc}</p>
               </div>
+            </div>
+          )}
+
+          {step === 'error' && (
+            <div className="py-20 flex flex-col items-center justify-center space-y-8 text-center">
+              <div className="bg-red-50 p-6 rounded-full shadow-lg shadow-red-100">
+                <AlertCircle className="w-20 h-20 text-red-500" />
+              </div>
+              <div className="space-y-3">
+                <h3 className="text-3xl font-black text-slate-900 tracking-tight">Payment Failed</h3>
+                <p className="text-red-600 text-lg font-bold max-w-[320px]">{error}</p>
+              </div>
+              <button
+                onClick={() => {
+                  setStep('details');
+                  setError('');
+                  setFormData({ cardNumber: '', expiry: '', cvv: '', name: '' });
+                }}
+                className="mt-6 px-8 py-3 bg-[#85409D] text-white rounded-xl font-bold hover:bg-[#4D2B8C] transition-all"
+              >
+                Try Again
+              </button>
             </div>
           )}
         </div>

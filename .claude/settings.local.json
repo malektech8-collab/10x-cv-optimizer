@@ -1,0 +1,20 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(powershell -Command:*)",
+      "Bash(npm install)",
+      "Bash(npm run build:*)",
+      "Bash(firebase deploy:*)",
+      "Bash(firebase functions:delete:*)",
+      "Bash(firebase functions:list:*)",
+      "Bash(firebase hosting:sites:list:*)",
+      "Bash(firebase functions:config:set:*)",
+      "Bash(firebase functions:config:get:*)",
+      "Bash(curl:*)",
+      "Bash(npm run dev:*)",
+      "Bash(firebase functions:log:*)",
+      "Bash(ls:*)",
+      "Bash(git add:*)"
+    ]
+  }
+}

@@ -86,7 +86,7 @@ export const Home: React.FC<HomeProps> = ({ lang, setLang }) => {
             const existingDoc = querySnapshot.docs[0].data();
             setOptimizedHtml(existingDoc.html_content);
             setCurrentOptimizationId(querySnapshot.docs[0].id);
-            setIsPaid(existingDoc.is_paid || true);
+            setIsPaid(existingDoc.is_paid);
             setStatus(AppStatus.COMPLETED);
             window.scrollTo({ top: 0, behavior: 'smooth' });
             return; // Exit early, no need to call Gemini
@@ -106,7 +106,7 @@ export const Home: React.FC<HomeProps> = ({ lang, setLang }) => {
             user_id: user.uid,
             original_filename: currentFilename,
             html_content: html,
-            is_paid: true, // TEMPORARY TESTING BYPASS
+            is_paid: false,
             order_number: orderNum,
             created_at: new Date().toISOString()
           });
@@ -114,7 +114,6 @@ export const Home: React.FC<HomeProps> = ({ lang, setLang }) => {
         }
       }
 
-      setIsPaid(true); // TEMPORARY TESTING BYPASS
       setStatus(AppStatus.COMPLETED);
       window.scrollTo({ top: 0, behavior: 'smooth' });
     } catch (err: any) {
@@ -360,6 +359,7 @@ export const Home: React.FC<HomeProps> = ({ lang, setLang }) => {
                   isPaid={isPaid}
                   onPaymentConfirm={handlePaymentConfirm}
                   lang={lang}
+                  optimizationId={currentOptimizationId || undefined}
                 />
               )}
             </div>

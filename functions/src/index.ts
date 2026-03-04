@@ -23,6 +23,11 @@ IMPORTANT: Provide ALL the JSON values (strings and arrays) entirely in ${target
 export const analyzeResume = functions.https.onCall(
     { cors: true },
     async (request) => {
+        // Require authentication - users must be logged in to analyze
+        if (!request.auth) {
+            throw new functions.https.HttpsError('unauthenticated', 'You must be logged in to analyze your resume.');
+        }
+
         const { fileBase64, mimeType, targetLang } = request.data;
 
         if (!fileBase64 || !mimeType || !targetLang) {
@@ -111,28 +116,27 @@ CONTENT RULES
 export const optimizeResume = functions.https.onCall(
     { cors: true },
     async (request) => {
-        // Only allow logged in users (Temporarily disabled for testing/free usage)
-        /*
+        // Require authentication - users must be logged in to optimize
         if (!request.auth) {
-            throw new functions.https.HttpsError('unauthenticated', 'User must be authenticated to optimize.');
+            throw new functions.https.HttpsError('unauthenticated', 'You must be logged in to optimize your resume.');
         }
-        */
 
         const { fileBase64, mimeType, targetLang, userComments, optimizationId } = request.data;
 
-        // Optional: Verify payment status in Firestore if optimizationId is provided
+        // Verify payment status in Firestore if optimizationId is provided (existing optimization)
         if (optimizationId) {
             const docRef = admin.firestore().collection('optimizations').doc(optimizationId);
             const doc = await docRef.get();
-            // If the user isn't logged in, or their ID doesn't match the record, deny access to the existing optimization ID
-            if (!doc.exists || (request.auth && doc.data()?.user_id !== request.auth.uid)) {
+            // If the record doesn't exist or belongs to a different user, deny access
+            if (!doc.exists || doc.data()?.user_id !== request.auth.uid) {
                 throw new functions.https.HttpsError('permission-denied', 'Unauthorized access to this optimization record.');
             }
+            // Check if payment is required for existing optimization
             if (!doc.data()?.is_paid) {
-                // Uncomment this once actual payment gateway is integrated
-                // throw new functions.https.HttpsError('failed-precondition', 'Payment required before optimization.');
+                throw new functions.https.HttpsError('failed-precondition', 'Payment required for export and premium access. Please unlock your resume to proceed.');
             }
         }
+        // For new optimizations (no ID yet), payment will be enforced when saving to Firestore
 
         if (!fileBase64 || !mimeType || !targetLang) {
             throw new functions.https.HttpsError('invalid-argument', 'Missing required arguments');
@@ -219,6 +223,246 @@ export const chatWithConsultant = functions.https.onCall(
         } catch (error: any) {
             console.error("Gemini Chat API Error:", error);
             throw new functions.https.HttpsError('internal', error.message || 'Chat failed');
+        }
+    }
+);
+
+// Paymob Payment Integration
+const PAYMOB_BASE_URL = 'https://api.paymob.com/api/acceptance';
+const PAYMOB_AUTH_URL = 'https://accept.paymobsolutions.com/api/auth/tokens';
+
+// Helper function to get Paymob credentials
+function getPaymobCredentials() {
+    try {
+        const config = require('firebase-functions').config;
+        const apiKey = config().paymob?.api_key || process.env.PAYMOB_API_KEY || '';
+        const merchantId = config().paymob?.merchant_id || process.env.PAYMOB_MERCHANT_ID || '';
+        return { apiKey, merchantId };
+    } catch (error) {
+        console.error('Error reading Paymob config:', error);
+        return { apiKey: process.env.PAYMOB_API_KEY || '', merchantId: process.env.PAYMOB_MERCHANT_ID || '' };
+    }
+}
+
+interface PaymentInitiateRequest {
+    amount: number; // Amount in cents
+    cardNumber: string;
+    expiryMonth: string;
+    expiryYear: string;
+    cvv: string;
+    cardholderName: string;
+    optimizationId?: string;
+    language: 'en' | 'ar';
+}
+
+/**
+ * Cloud Function: Initiate a payment with Paymob
+ * Creates an auth token, then processes the payment
+ */
+export const initiatePayment = functions.https.onCall(
+    { cors: true },
+    async (request) => {
+        const data = request.data as PaymentInitiateRequest;
+
+        if (!data.amount || !data.cardNumber || !data.cvv || !data.cardholderName) {
+            throw new functions.https.HttpsError('invalid-argument', 'Missing required payment information');
+        }
+
+        const { apiKey: PAYMOB_API_KEY, merchantId: PAYMOB_MERCHANT_ID } = getPaymobCredentials();
+
+        if (!PAYMOB_API_KEY || !PAYMOB_MERCHANT_ID) {
+            console.error('Paymob API credentials not configured');
+            throw new functions.https.HttpsError('internal', 'Payment service not properly configured');
+        }
+
+        try {
+            // Step 1: Get authentication token from Paymob
+            const authResponse = await fetch(PAYMOB_AUTH_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ api_key: PAYMOB_API_KEY })
+            });
+
+            if (!authResponse.ok) {
+                throw new Error('Failed to authenticate with Paymob');
+            }
+
+            const authData = await authResponse.json();
+            const authToken = authData.token;
+
+            // Step 2: Create payment order/transaction
+            const orderResponse = await fetch(`${PAYMOB_BASE_URL}/orders/payment_processes`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Token ${authToken}`
+                },
+                body: JSON.stringify({
+                    merchant_id: PAYMOB_MERCHANT_ID,
+                    amount_cents: data.amount,
+                    currency: 'EGP', // or SAR if preferred
+                    payment_type: 'card',
+                    items: [
+                        {
+                            name: 'Resume Optimization',
+                            description: 'Professional resume optimization and ATS enhancement',
+                            amount_cents: data.amount,
+                            quantity: 1
+                        }
+                    ],
+                    billing_data: {
+                        apartment: 'N/A',
+                        email: 'user@example.com',
+                        floor: 'N/A',
+                        first_name: data.cardholderName.split(' ')[0] || 'User',
+                        last_name: data.cardholderName.split(' ')[1] || 'User',
+                        phone_number: request.auth?.uid || 'N/A',
+                        postal_code: '00000',
+                        street: 'N/A',
+                        town: 'N/A',
+                        country: 'SA' // Saudi Arabia
+                    }
+                })
+            });
+
+            if (!orderResponse.ok) {
+                const errorData = await orderResponse.json();
+                console.error('Paymob order creation failed:', errorData);
+                throw new Error('Failed to create payment order');
+            }
+
+            const orderData = await orderResponse.json();
+            const orderId = orderData.id;
+
+            // Step 3: Process card payment
+            const paymentResponse = await fetch(`${PAYMOB_BASE_URL}/payments/card`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Token ${authToken}`
+                },
+                body: JSON.stringify({
+                    source: {
+                        identifier: data.cardNumber,
+                        source_type: 'card',
+                        pan: data.cardNumber,
+                        expiry_month: parseInt(data.expiryMonth),
+                        expiry_year: parseInt(data.expiryYear),
+                        cvv: data.cvv,
+                        cardholder_name: data.cardholderName
+                    },
+                    payment_details: {
+                        amount_cents: data.amount,
+                        order_id: orderId,
+                        billing_reference: `RES-${Date.now()}`,
+                        notification_url: '',
+                        order_registration_data: {
+                            bill_reference: `RES-${Date.now()}`
+                        }
+                    }
+                })
+            });
+
+            if (!paymentResponse.ok) {
+                const errorData = await paymentResponse.json();
+                console.error('Paymob payment failed:', errorData);
+
+                // Check if it's a card decline
+                if (errorData.detail === 'Insufficient balance') {
+                    throw new Error('Your card has insufficient balance');
+                }
+                if (errorData.detail?.includes('declined')) {
+                    throw new Error('Your card has been declined');
+                }
+                throw new Error('Payment processing failed. Please check your card details.');
+            }
+
+            const paymentData = await paymentResponse.json();
+            const transactionId = paymentData.id;
+
+            // Step 4: Update Firestore with payment record
+            if (data.optimizationId && request.auth) {
+                try {
+                    await admin.firestore().collection('optimizations').doc(data.optimizationId).update({
+                        is_paid: true,
+                        payment_transaction_id: transactionId,
+                        payment_amount: data.amount / 100, // Convert back to normal amount
+                        payment_currency: 'SAR',
+                        payment_date: new Date().toISOString(),
+                        payment_method: 'paymob_card'
+                    });
+                } catch (firestoreErr) {
+                    console.error('Failed to update Firestore with payment:', firestoreErr);
+                    // Don't fail the payment - just log the error
+                }
+            }
+
+            return {
+                success: true,
+                message: 'Payment processed successfully',
+                transactionId: transactionId,
+                orderId: orderId
+            };
+        } catch (error: any) {
+            console.error('Payment processing error:', error);
+            const errorMessage = error.message || 'An error occurred while processing your payment';
+            throw new functions.https.HttpsError('internal', errorMessage);
+        }
+    }
+);
+
+/**
+ * Cloud Function: Verify payment status
+ * Checks if a transaction was successful
+ */
+export const verifyPaymentStatus = functions.https.onCall(
+    { cors: true },
+    async (request) => {
+        const { transactionId } = request.data;
+
+        if (!transactionId) {
+            throw new functions.https.HttpsError('invalid-argument', 'Transaction ID is required');
+        }
+
+        const { apiKey: PAYMOB_API_KEY } = getPaymobCredentials();
+
+        if (!PAYMOB_API_KEY) {
+            throw new functions.https.HttpsError('internal', 'Payment service not configured');
+        }
+
+        try {
+            // Get authentication token
+            const authResponse = await fetch(PAYMOB_AUTH_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ api_key: PAYMOB_API_KEY })
+            });
+
+            const authData = await authResponse.json();
+            const authToken = authData.token;
+
+            // Query transaction status
+            const statusResponse = await fetch(
+                `${PAYMOB_BASE_URL}/payments/${transactionId}`,
+                {
+                    headers: { 'Authorization': `Token ${authToken}` }
+                }
+            );
+
+            if (!statusResponse.ok) {
+                throw new Error('Failed to verify payment status');
+            }
+
+            const statusData = await statusResponse.json();
+
+            return {
+                success: statusData.success || false,
+                status: statusData.status,
+                message: statusData.error_occured ? 'Payment failed' : 'Payment successful'
+            };
+        } catch (error: any) {
+            console.error('Payment verification error:', error);
+            throw new functions.https.HttpsError('internal', 'Failed to verify payment status');
         }
     }
 );

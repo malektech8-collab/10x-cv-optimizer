@@ -12,9 +12,10 @@ interface ResumePreviewProps {
   isPaid: boolean;
   onPaymentConfirm: () => void;
   lang: Language;
+  optimizationId?: string;
 }
 
-export const ResumePreview: React.FC<ResumePreviewProps> = ({ html, onReset, isPaid, onPaymentConfirm, lang }) => {
+export const ResumePreview: React.FC<ResumePreviewProps> = ({ html, onReset, isPaid, onPaymentConfirm, lang, optimizationId }) => {
   const t = translations[lang];
   const [copiedText, setCopiedText] = useState(false);
   const [copiedHtml, setCopiedHtml] = useState(false);
@@ -199,6 +200,7 @@ export const ResumePreview: React.FC<ResumePreviewProps> = ({ html, onReset, isP
         amount={39}
         currency={t.pricing.currency}
         lang={lang}
+        optimizationId={optimizationId}
       />
 
       <div className="w-full max-w-5xl mx-auto space-y-8 animate-fade-in" dir={t.dir}>
