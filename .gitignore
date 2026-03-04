@@ -12,6 +12,8 @@ dist
 dist-ssr
 *.local
 .env
+.env.local
+firebase-config.json
 
 # Editor directories and files
 .vscode/*
@@ -23,3 +25,22 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Credential files - Never commit
+.claude/settings.local.json
+API_KEY_TO_UPDATE.txt
+PAYMOB_API_KEY_UPDATE.md
+FIRESTORE_UPDATE_GUIDE.md
+PAYMENT_SYSTEM_FINAL_STATUS.md
+QUICK_START.md
+RECOVERY_COMPLETE.md
+PAYMOB_*.md
+init-paymob*.mjs
+test-paymob*.js
+test-paymob*.mjs
+update-paymob*.js
+update-paymob*.mjs
+update-paymob*.cjs
+*-paymob*.mjs
+*-paymob*.js
+*-config.json
