@@ -67,20 +67,20 @@ export const RefundPolicy: React.FC<RefundPolicyProps> = ({ lang, setLang }) => 
 
     return (
         <Layout lang={lang} onLanguageChange={setLang}>
-            <div className="max-w-4xl mx-auto py-24 px-4 space-y-12 animate-fade-in" dir={t.dir}>
-                <div className="space-y-4">
-                    <h1 className="text-5xl font-black text-[#4D2B8C] tracking-tight">{currentContent.title}</h1>
-                    <p className="text-slate-500 font-bold">{currentContent.lastUpdated}</p>
+            <div className="max-w-3xl mx-auto py-14 sm:py-20 px-4 space-y-10 animate-fade-up" dir={t.dir}>
+                <div className="space-y-3">
+                    <h1 className="text-fluid-4xl font-bold text-[#150D30] tracking-tight leading-tight">{currentContent.title}</h1>
+                    <p className="text-slate-400 text-sm">{currentContent.lastUpdated}</p>
                 </div>
 
-                <div className="bg-white p-8 md:p-12 rounded-[3rem] border border-slate-100 shadow-xl shadow-indigo-100/30 space-y-8 text-slate-600 font-medium leading-relaxed">
-                    <p className="text-lg text-[#EEA727] font-black">{currentContent.intro}</p>
+                <div className="bg-white p-6 md:p-10 rounded-2xl border border-[#E8E2F0] shadow-[0_4px_24px_rgba(45,16,101,0.08)] space-y-8 text-slate-600 leading-relaxed">
+                    <p className="text-base">{currentContent.intro}</p>
 
                     <div className="space-y-8">
                         {currentContent.sections.map((section, idx) => (
-                            <div key={idx} className="space-y-3">
-                                <h3 className="text-xl font-black text-[#85409D] tracking-tight">{section.title}</h3>
-                                <p className="whitespace-pre-line text-slate-500 font-bold leading-relaxed">{section.text}</p>
+                            <div key={idx} className="space-y-2.5">
+                                <h3 className="text-lg font-semibold text-[#2D1065]">{section.title}</h3>
+                                <p className="whitespace-pre-line text-slate-500 text-sm leading-relaxed">{section.text}</p>
                             </div>
                         ))}
                     </div>

@@ -41,112 +41,118 @@ export const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose, lan
     };
 
     return (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center px-4 py-6 sm:p-6 bg-[#4D2B8C]/20 backdrop-blur-md animate-in fade-in duration-300">
+        <div
+            className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-[#150D30]/60 backdrop-blur-sm animate-fade-in"
+            onClick={(e) => e.target === e.currentTarget && onClose()}
+        >
             <div
-                className="relative w-full max-w-xl bg-white rounded-[2rem] sm:rounded-[3rem] shadow-2xl border border-indigo-50 overflow-hidden"
+                className="relative w-full max-w-md bg-white rounded-2xl shadow-[0_16px_48px_rgba(0,0,0,0.12)] border border-[#E8E2F0] overflow-hidden max-h-[90vh] flex flex-col"
                 dir={t.dir}
             >
-                <button
-                    onClick={onClose}
-                    className="absolute top-6 right-6 p-2 text-slate-400 hover:text-[#4D2B8C] hover:bg-slate-50 rounded-full transition-all z-10"
-                >
-                    <X className="w-6 h-6" />
-                </button>
+                {/* Header */}
+                <div className="px-6 py-5 border-b border-[#E8E2F0] flex items-center justify-between flex-shrink-0">
+                    <div className="flex items-center gap-3">
+                        <div className="w-9 h-9 bg-[#EBE5F5] rounded-xl flex items-center justify-center">
+                            <MessageSquare className="w-4 h-4 text-[#2D1065]" />
+                        </div>
+                        <span className="font-semibold text-[#150D30]">{t.contact.title}</span>
+                    </div>
+                    <button
+                        onClick={onClose}
+                        className="p-2 text-slate-400 hover:text-slate-700 hover:bg-slate-50 rounded-lg transition-all"
+                    >
+                        <X className="w-5 h-5" />
+                    </button>
+                </div>
 
-                <div className="p-8 sm:p-12">
+                {/* Body */}
+                <div className="p-6 overflow-y-auto">
                     {success ? (
-                        <div className="text-center space-y-6 py-8 animate-in zoom-in-95 duration-500">
-                            <div className="bg-green-50 w-20 h-20 rounded-[2rem] flex items-center justify-center mx-auto shadow-sm">
-                                <CheckCircle2 className="w-10 h-10 text-green-500" />
+                        <div className="text-center space-y-5 py-6">
+                            <div className="bg-green-50 w-14 h-14 rounded-xl flex items-center justify-center mx-auto">
+                                <CheckCircle2 className="w-7 h-7 text-green-500" />
                             </div>
-                            <div className="space-y-2">
-                                <h3 className="text-3xl font-black text-[#4D2B8C] tracking-tight">{t.contact.success}</h3>
-                                <p className="text-slate-500 font-bold leading-relaxed">
+                            <div className="space-y-1.5">
+                                <h3 className="text-xl font-bold text-[#150D30]">{t.contact.success}</h3>
+                                <p className="text-slate-500 text-sm leading-relaxed">
                                     {t.contact.successDesc}
                                 </p>
                             </div>
                             <button
                                 onClick={onClose}
-                                className="px-10 py-4 bg-[#4D2B8C] text-white rounded-2xl font-black text-lg hover:bg-[#85409D] transition-all shadow-xl shadow-indigo-100"
+                                className="px-6 py-2.5 bg-[#2D1065] text-white rounded-xl font-medium text-sm hover:bg-[#220C4E] transition-colors"
                             >
-                                Close Window
+                                Close
                             </button>
                         </div>
                     ) : (
                         <>
-                            <div className="space-y-2 mb-10">
-                                <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-indigo-50 text-[#4D2B8C] rounded-full text-[10px] font-black uppercase tracking-widest border border-indigo-100/50 mb-2">
-                                    <MessageSquare className="w-3.5 h-3.5" />
-                                    <span>Get in Touch</span>
-                                </div>
-                                <h2 className="text-3xl sm:text-4xl font-black text-[#4D2B8C] tracking-tight">{t.contact.title}</h2>
-                                <p className="text-slate-500 font-bold text-sm sm:text-base">{t.contact.subtitle}</p>
-                            </div>
+                            <p className="text-slate-500 text-sm mb-5">{t.contact.subtitle}</p>
 
-                            <form onSubmit={handleSubmit} className="space-y-6">
-                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                                    <div className="space-y-2 text-start">
-                                        <label className="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">{t.contact.name}</label>
+                            <form onSubmit={handleSubmit} className="space-y-4">
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                    <div className="space-y-1.5 text-start">
+                                        <label className="text-xs font-medium text-slate-500">{t.contact.name}</label>
                                         <input
                                             required
                                             type="text"
                                             value={formData.name}
                                             onChange={e => setFormData(prev => ({ ...prev, name: e.target.value }))}
-                                            className="w-full bg-slate-50 border-2 border-slate-50 rounded-2xl p-4 text-[#4D2B8C] font-bold focus:bg-white focus:border-[#EEA727] outline-none transition-all placeholder-slate-300"
+                                            className="w-full px-4 py-2.5 rounded-xl border border-[#E8E2F0] outline-none focus:ring-2 focus:ring-[#2D1065]/20 focus:border-[#2D1065] transition-all text-sm text-[#150D30] bg-white"
                                         />
                                     </div>
-                                    <div className="space-y-2 text-start">
-                                        <label className="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">{t.contact.email}</label>
+                                    <div className="space-y-1.5 text-start">
+                                        <label className="text-xs font-medium text-slate-500">{t.contact.email}</label>
                                         <input
                                             required
                                             type="email"
                                             value={formData.email}
                                             onChange={e => setFormData(prev => ({ ...prev, email: e.target.value }))}
-                                            className="w-full bg-slate-50 border-2 border-slate-50 rounded-2xl p-4 text-[#4D2B8C] font-bold focus:bg-white focus:border-[#EEA727] outline-none transition-all placeholder-slate-300"
+                                            className="w-full px-4 py-2.5 rounded-xl border border-[#E8E2F0] outline-none focus:ring-2 focus:ring-[#2D1065]/20 focus:border-[#2D1065] transition-all text-sm text-[#150D30] bg-white"
                                         />
                                     </div>
                                 </div>
 
-                                <div className="space-y-2 text-start">
-                                    <label className="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">{t.contact.subject}</label>
+                                <div className="space-y-1.5 text-start">
+                                    <label className="text-xs font-medium text-slate-500">{t.contact.subject}</label>
                                     <input
                                         required
                                         type="text"
                                         value={formData.subject}
                                         onChange={e => setFormData(prev => ({ ...prev, subject: e.target.value }))}
-                                        className="w-full bg-slate-50 border-2 border-slate-50 rounded-2xl p-4 text-[#4D2B8C] font-bold focus:bg-white focus:border-[#EEA727] outline-none transition-all placeholder-slate-300"
+                                        className="w-full px-4 py-2.5 rounded-xl border border-[#E8E2F0] outline-none focus:ring-2 focus:ring-[#2D1065]/20 focus:border-[#2D1065] transition-all text-sm text-[#150D30] bg-white"
                                     />
                                 </div>
 
-                                <div className="space-y-2 text-start">
-                                    <label className="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">{t.contact.message}</label>
+                                <div className="space-y-1.5 text-start">
+                                    <label className="text-xs font-medium text-slate-500">{t.contact.message}</label>
                                     <textarea
                                         required
-                                        rows={4}
+                                        rows={3}
                                         value={formData.message}
                                         onChange={e => setFormData(prev => ({ ...prev, message: e.target.value }))}
-                                        className="w-full bg-slate-50 border-2 border-slate-50 rounded-2xl p-4 text-[#4D2B8C] font-bold focus:bg-white focus:border-[#EEA727] outline-none transition-all placeholder-slate-300 resize-none"
+                                        className="w-full px-4 py-2.5 rounded-xl border border-[#E8E2F0] outline-none focus:ring-2 focus:ring-[#2D1065]/20 focus:border-[#2D1065] transition-all text-sm text-[#150D30] bg-white resize-none"
                                     />
                                 </div>
 
                                 {error && (
-                                    <div className="p-4 bg-red-50 border border-red-100 rounded-2xl flex items-center gap-3 text-red-800 animate-in slide-in-from-top-4">
-                                        <AlertCircle className="w-5 h-5 flex-shrink-0" />
-                                        <p className="text-sm font-bold">{error}</p>
+                                    <div className="p-3 bg-red-50 border border-red-100 rounded-xl flex items-center gap-2.5 text-red-700">
+                                        <AlertCircle className="w-4 h-4 flex-shrink-0" />
+                                        <p className="text-sm">{error}</p>
                                     </div>
                                 )}
 
                                 <button
                                     disabled={loading}
                                     type="submit"
-                                    className="w-full py-5 bg-[#EEA727] text-white rounded-[1.5rem] sm:rounded-[2rem] font-black text-lg hover:bg-[#4D2B8C] transition-all flex items-center justify-center gap-3 shadow-xl shadow-amber-100 disabled:opacity-50 transform hover:-translate-y-1"
+                                    className="w-full py-3 bg-[#2D1065] text-white rounded-xl font-medium text-sm hover:bg-[#220C4E] transition-colors flex items-center justify-center gap-2.5 shadow-[0_2px_8px_rgba(45,16,101,0.25)] disabled:opacity-50"
                                 >
                                     {loading ? (
-                                        <Loader2 className="w-6 h-6 animate-spin" />
+                                        <Loader2 className="w-4 h-4 animate-spin" />
                                     ) : (
                                         <>
                                             {t.contact.send}
-                                            <Send className={`w-5 h-5 ${lang === 'ar' ? 'rotate-180' : ''}`} />
+                                            <Send className={`w-4 h-4 ${lang === 'ar' ? 'rotate-180' : ''}`} />
                                         </>
                                     )}
                                 </button>

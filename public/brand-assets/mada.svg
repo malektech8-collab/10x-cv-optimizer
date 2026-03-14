@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 80">
+  <g transform="translate(10, 5)">
+    <!-- mada mark -->
+    <rect x="0" y="0" width="28" height="28" rx="4" fill="#27A844"/>
+    <rect x="32" y="0" width="28" height="28" rx="4" fill="#6DC24B"/>
+    <rect x="64" y="0" width="28" height="28" rx="4" fill="#009FDF"/>
+    <!-- mada text -->
+    <text x="0" y="58" fill="#1A4674" font-family="Arial,Helvetica,sans-serif" font-size="30" font-weight="bold" letter-spacing="2">mada</text>
+  </g>
+</svg>

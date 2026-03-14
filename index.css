@@ -1,0 +1,196 @@
+@import "tailwindcss";
+
+/* ─── Brand helpers ─── */
+@utility shadow-brand-sm {
+  box-shadow: 0 1px 4px rgba(45,16,101,0.06), 0 2px 8px rgba(45,16,101,0.04);
+}
+
+@utility shadow-brand-md {
+  box-shadow: 0 4px 16px rgba(45,16,101,0.08), 0 1px 4px rgba(45,16,101,0.04);
+}
+
+@utility shadow-brand-lg {
+  box-shadow: 0 8px 32px rgba(45,16,101,0.10), 0 2px 8px rgba(45,16,101,0.06);
+}
+
+/* ─── Stagger animation delays ─── */
+@utility stagger-1 { animation-delay: 0.08s; }
+@utility stagger-2 { animation-delay: 0.16s; }
+@utility stagger-3 { animation-delay: 0.24s; }
+@utility stagger-4 { animation-delay: 0.32s; }
+@utility stagger-5 { animation-delay: 0.40s; }
+
+/* ─── Fluid Typography ─── */
+@utility text-fluid-xs {
+  font-size: clamp(0.6875rem, 0.65rem + 0.2vw, 0.8125rem);
+}
+
+@utility text-fluid-sm {
+  font-size: clamp(0.8125rem, 0.75rem + 0.3vw, 0.9375rem);
+}
+
+@utility text-fluid-base {
+  font-size: clamp(0.9375rem, 0.875rem + 0.35vw, 1.125rem);
+}
+
+@utility text-fluid-lg {
+  font-size: clamp(1.125rem, 1rem + 0.6vw, 1.375rem);
+}
+
+@utility text-fluid-xl {
+  font-size: clamp(1.25rem, 1.1rem + 0.8vw, 1.625rem);
+}
+
+@utility text-fluid-2xl {
+  font-size: clamp(1.5rem, 1.25rem + 1.2vw, 2rem);
+}
+
+@utility text-fluid-3xl {
+  font-size: clamp(1.875rem, 1.5rem + 1.8vw, 2.75rem);
+}
+
+@utility text-fluid-4xl {
+  font-size: clamp(2.25rem, 1.8rem + 2.5vw, 3.75rem);
+}
+
+@utility text-fluid-hero {
+  font-size: clamp(2.75rem, 2rem + 5vw, 6rem);
+  line-height: 1.1;
+}
+
+@utility text-fluid-price {
+  font-size: clamp(4rem, 3rem + 5vw, 7rem);
+  line-height: 1;
+}
+
+/* ─── Fluid Spacing ─── */
+@utility py-fluid-section {
+  padding-top: clamp(3rem, 6vw, 6rem);
+  padding-bottom: clamp(2rem, 4vw, 4rem);
+}
+
+@utility py-fluid-xl {
+  padding-top: clamp(4rem, 8vw, 8rem);
+  padding-bottom: clamp(4rem, 8vw, 8rem);
+}
+
+@utility p-fluid-card {
+  padding: clamp(1.5rem, 3.5vw, 3rem);
+}
+
+@utility p-fluid-card-lg {
+  padding: clamp(2rem, 4vw, 3.5rem);
+}
+
+@utility gap-fluid-sm {
+  gap: clamp(1rem, 2vw, 1.5rem);
+}
+
+@utility gap-fluid-md {
+  gap: clamp(1.5rem, 3vw, 2.5rem);
+}
+
+@utility gap-fluid-lg {
+  gap: clamp(2rem, 4vw, 4rem);
+}
+
+@utility mt-fluid-md {
+  margin-top: clamp(3rem, 6vw, 6rem);
+}
+
+@utility mt-fluid-lg {
+  margin-top: clamp(5rem, 9vw, 9rem);
+}
+
+@utility mt-fluid-xl {
+  margin-top: clamp(6rem, 10vw, 10rem);
+}
+
+@utility mb-fluid-md {
+  margin-bottom: clamp(2.5rem, 5vw, 5rem);
+}
+
+@utility space-fluid-sm {
+  & > * + * {
+    margin-top: clamp(0.75rem, 1.5vw, 1.5rem);
+  }
+}
+
+@utility space-fluid-md {
+  & > * + * {
+    margin-top: clamp(1.25rem, 2.5vw, 2rem);
+  }
+}
+
+/* ─── CSS Custom Properties ─── */
+:root {
+    --brand-deep: #2D1065;
+    --brand-vivid: #9B4DCA;
+    --brand-accent: #C9984A;
+    --brand-highlight: #E8D48B;
+    --surface: #FFFFFF;
+    --bg: #FAF9F7;
+    --border: #E8E2F0;
+    --text-primary: #150D30;
+    --text-secondary: #64748B;
+    --shadow-sm: 0 1px 4px rgba(45,16,101,0.06), 0 2px 8px rgba(45,16,101,0.04);
+    --shadow-md: 0 4px 16px rgba(45,16,101,0.08), 0 1px 4px rgba(45,16,101,0.04);
+    --shadow-lg: 0 8px 32px rgba(45,16,101,0.10), 0 2px 8px rgba(45,16,101,0.06);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+    font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+    background-color: #FAF9F7;
+    color: #150D30;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Arabic font — applied via dir="rtl" on the app wrapper */
+[dir="rtl"],
+[dir="rtl"] * {
+    font-family: 'Zain', sans-serif;
+}
+
+.hero-gradient {
+    background:
+        radial-gradient(ellipse at 72% 0%, rgba(45,16,101,0.07) 0%, transparent 55%),
+        radial-gradient(ellipse at 5% 90%, rgba(201,152,74,0.06) 0%, transparent 45%);
+}
+
+.dot-grid {
+    background-image: radial-gradient(circle, rgba(45,16,101,0.13) 1px, transparent 1px);
+    background-size: 24px 24px;
+}
+
+@media print {
+    .no-print { display: none !important; }
+    .resume-paper {
+        box-shadow: none !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        width: 100% !important;
+    }
+}
+
+/* ─── Animations ─── */
+.animate-fade-in { animation: fadeIn 0.7s ease-out both; }
+.animate-fade-up { animation: fadeUp 0.6s ease-out both; }
+
+.delay-100 { animation-delay: 0.10s; }
+.delay-200 { animation-delay: 0.20s; }
+.delay-300 { animation-delay: 0.30s; }
+.delay-400 { animation-delay: 0.40s; }
+.delay-500 { animation-delay: 0.50s; }
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+@keyframes fadeUp {
+    from { opacity: 0; transform: translateY(18px); }
+    to   { opacity: 1; transform: translateY(0); }
+}

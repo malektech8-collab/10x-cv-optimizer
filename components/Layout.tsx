@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { FileBadge, Languages, LogOut, History, User, Menu, X, BookOpen, Sparkles, MessageSquare } from 'lucide-react';
+import { Languages, LogOut, History, User, Menu, X, BookOpen, Sparkles, MessageSquare } from 'lucide-react';
 import { translations, Language } from '../constants/translations';
 import { AuthModal } from './AuthModal';
 import { auth, db, isFirebaseConfigured } from '../lib/firebase';
@@ -13,11 +13,10 @@ interface LayoutProps {
   children: React.ReactNode;
   lang: Language;
   onLanguageChange: (lang: Language) => void;
-  onHistoryClick?: () => void;
   onHomeClick?: () => void;
 }
 
-export const Layout: React.FC<LayoutProps> = ({ children, lang, onLanguageChange, onHistoryClick, onHomeClick }) => {
+export const Layout: React.FC<LayoutProps> = ({ children, lang, onLanguageChange, onHomeClick }) => {
   const t = translations[lang];
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [user, setUser] = useState<FirebaseUser | null>(null);
@@ -36,7 +35,6 @@ export const Layout: React.FC<LayoutProps> = ({ children, lang, onLanguageChange
           if (snap.exists()) {
             setUserRole(snap.data().role || 'individual_user');
           } else {
-            // Register new user in DB
             await setDoc(userDocRef, {
               email: currentUser.email,
               role: 'individual_user',
@@ -80,110 +78,121 @@ export const Layout: React.FC<LayoutProps> = ({ children, lang, onLanguageChange
       <AuthModal isOpen={isAuthModalOpen} onClose={() => setIsAuthModalOpen(false)} lang={lang} />
       <ContactModal isOpen={isContactOpen} onClose={() => setIsContactOpen(false)} lang={lang} />
 
-      {/* Free Announcement Banner */}
-      <div className="bg-gradient-to-r from-[#4D2B8C] to-[#85409D] py-2 px-4 no-print text-center">
-        <p className="text-white text-xs sm:text-sm font-black flex items-center justify-center gap-2">
-          <Sparkles className="w-4 h-4 text-[#FFEF5F]" />
+      {/* Announcement Banner */}
+      <div className="bg-[#2D1065] py-2 px-4 no-print text-center">
+        <p className="text-white text-xs font-medium flex items-center justify-center gap-2 tracking-wide">
+          <Sparkles className="w-3.5 h-3.5 text-[#E8D48B] flex-shrink-0" />
           {t.nav.announcement}
-          <Sparkles className="w-4 h-4 text-[#FFEF5F]" />
         </p>
       </div>
 
-      <nav className="bg-white border-b border-indigo-50 sticky top-0 z-50 no-print">
+      {/* Navigation */}
+      <nav className="bg-white border-b border-[#E8E2F0] sticky top-0 z-50 no-print">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between h-20 items-center">
-            <Link to="/" className="flex items-center gap-2 sm:gap-3 cursor-pointer shrink-0" onClick={() => {
-              if (onHomeClick) onHomeClick();
-              window.scrollTo({ top: 0, behavior: 'smooth' });
-              setIsMenuOpen(false);
-            }}>
-              <div className="bg-[#4D2B8C] p-1.5 sm:p-2 rounded-xl shadow-lg shadow-indigo-200">
-                <FileBadge className="text-[#FFEF5F] w-6 h-6 sm:w-7 sm:h-7" />
-              </div>
-              <span className="text-lg sm:text-xl font-black text-[#4D2B8C] tracking-tight whitespace-nowrap">
-                {t.brand.name}<span className="text-[#EEA727] ml-0.5">{t.brand.suffix}</span>
+          <div className="flex justify-between h-16 items-center">
+
+            {/* Logo */}
+            <Link
+              to="/"
+              className="flex items-center gap-2.5 cursor-pointer shrink-0"
+              onClick={() => {
+                if (onHomeClick) onHomeClick();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                setIsMenuOpen(false);
+              }}
+            >
+              <img src="/brand-assets/10-x logo.png" alt="10-x" className="w-9 h-9 rounded-lg" />
+              <span className="text-[17px] font-bold text-[#150D30] tracking-tight">
+                {t.brand.name}<span className="text-[#C9984A]">{t.brand.suffix}</span>
               </span>
             </Link>
 
-            <div className="flex items-center gap-2 sm:gap-4 md:gap-8">
-              <div className="hidden lg:flex items-center gap-8">
+            {/* Right side */}
+            <div className="flex items-center gap-1 sm:gap-2">
+
+              {/* Desktop nav links */}
+              <div className="hidden lg:flex items-center gap-1 me-2">
                 <Link
                   to="/blog"
-                  className="text-sm font-bold text-slate-600 hover:text-[#85409D] transition-colors"
+                  className="text-sm font-medium text-slate-600 hover:text-[#2D1065] hover:bg-[#F2EEF9] px-3 py-2 rounded-lg transition-all"
                 >
                   {t.nav.blog}
                 </Link>
                 {user && userRole !== 'individual_user' && (
                   <Link
                     to="/admin"
-                    className="text-sm font-bold text-[#85409D] hover:text-[#4D2B8C] transition-colors"
+                    className="text-sm font-medium text-[#9B4DCA] hover:text-[#2D1065] hover:bg-[#F2EEF9] px-3 py-2 rounded-lg transition-all"
                   >
                     {t.nav.adminPanel}
                   </Link>
                 )}
               </div>
 
-              <div className="hidden sm:flex items-center gap-2 border-l border-slate-100 pl-4 h-8">
+              {/* Language toggle */}
+              <div className="hidden sm:block border-s border-[#E8E2F0] ps-2">
                 <button
                   onClick={() => onLanguageChange(lang === 'en' ? 'ar' : 'en')}
-                  className="flex items-center gap-2 text-sm font-extrabold text-[#4D2B8C] hover:bg-indigo-50 px-3 py-1.5 rounded-lg transition-all"
+                  className="flex items-center gap-1.5 text-sm font-medium text-slate-600 hover:text-[#2D1065] hover:bg-[#F2EEF9] px-3 py-2 rounded-lg transition-all"
                 >
                   <Languages className="w-4 h-4" />
                   {lang === 'en' ? 'العربية' : 'English'}
                 </button>
               </div>
 
+              {/* Auth area */}
               {user ? (
-                <div className="flex items-center gap-2 sm:gap-4">
-                  <button
-                    onClick={onHistoryClick}
-                    className="hidden md:flex items-center gap-2 text-sm font-extrabold text-[#85409D] hover:bg-purple-50 px-3 py-1.5 rounded-lg transition-all"
+                <div className="flex items-center gap-1.5 ms-1">
+                  <Link
+                    to="/dashboard"
+                    className="hidden md:flex items-center gap-1.5 text-sm font-medium text-slate-600 hover:text-[#2D1065] hover:bg-[#F2EEF9] px-3 py-2 rounded-lg transition-all"
                   >
                     <History className="w-4 h-4" />
-                    {t.nav.history}
-                  </button>
-                  <div className="hidden sm:flex items-center gap-2 bg-slate-50 px-3 py-1.5 rounded-xl border border-slate-100">
-                    <User className="w-4 h-4 text-[#4D2B8C]" />
-                    <span className="text-xs font-black text-[#4D2B8C] truncate max-w-[80px] sm:max-w-[100px]">{user.email?.split('@')[0]}</span>
+                    {t.nav.dashboard}
+                  </Link>
+                  <div className="hidden sm:flex items-center gap-1.5 bg-[#F2EEF9] px-3 py-1.5 rounded-lg border border-[#E8E2F0]">
+                    <User className="w-3.5 h-3.5 text-[#2D1065]" />
+                    <span className="text-xs font-medium text-[#2D1065] truncate max-w-[80px]">
+                      {user.email?.split('@')[0]}
+                    </span>
                   </div>
                   <button
                     onClick={handleSignOut}
-                    className="p-2 sm:p-2.5 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-xl transition-all"
+                    className="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-all"
                     title={t.nav.signOut}
                   >
-                    <LogOut className="w-5 h-5" />
+                    <LogOut className="w-4 h-4" />
                   </button>
                 </div>
               ) : (
                 <button
                   onClick={() => setIsAuthModalOpen(true)}
-                  className="bg-[#4D2B8C] text-white px-4 sm:px-6 py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm font-extrabold hover:bg-[#85409D] transition-all shadow-md"
+                  className="ms-1 bg-[#2D1065] text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-[#220C4E] transition-colors shadow-[0_2px_8px_rgba(45,16,101,0.25)]"
                 >
                   {t.nav.signIn}
                 </button>
               )}
 
-              {/* Mobile Menu Toggle */}
+              {/* Mobile menu toggle */}
               <button
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
-                className="lg:hidden p-2 text-slate-600 hover:bg-slate-50 rounded-xl transition-all"
+                className="lg:hidden ms-1 p-2 text-slate-600 hover:bg-[#F2EEF9] rounded-lg transition-all"
               >
-                {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+                {isMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
               </button>
             </div>
           </div>
         </div>
 
-        {/* Mobile Menu Content */}
+        {/* Mobile Menu */}
         {isMenuOpen && (
-          <div className="lg:hidden border-t border-slate-50 bg-white animate-in slide-in-from-top duration-300">
-            <div className="px-4 pt-4 pb-8 space-y-4">
+          <div className="lg:hidden border-t border-[#E8E2F0] bg-white animate-fade-in">
+            <div className="px-4 py-4 space-y-1.5">
               <Link
                 to="/blog"
                 onClick={() => setIsMenuOpen(false)}
-                className="flex items-center gap-3 px-4 py-4 text-base font-black text-[#4D2B8C] bg-slate-50 rounded-2xl"
+                className="flex items-center gap-3 px-4 py-3 text-sm font-medium text-[#150D30] bg-[#F2EEF9] rounded-xl hover:bg-[#E8E2F0] transition-colors"
               >
-                <BookOpen className="w-5 h-5 text-[#85409D]" />
+                <BookOpen className="w-4 h-4 text-[#9B4DCA]" />
                 {t.nav.blog}
               </Link>
 
@@ -191,44 +200,36 @@ export const Layout: React.FC<LayoutProps> = ({ children, lang, onLanguageChange
                 <Link
                   to="/admin"
                   onClick={() => setIsMenuOpen(false)}
-                  className="flex items-center gap-3 px-4 py-4 text-base font-black text-[#85409D] bg-purple-50 rounded-2xl"
+                  className="flex items-center gap-3 px-4 py-3 text-sm font-medium text-[#9B4DCA] bg-purple-50 rounded-xl"
                 >
-                  <User className="w-5 h-5" />
+                  <User className="w-4 h-4" />
                   {t.nav.adminPanel}
                 </Link>
               )}
 
               {user && (
-                <button
-                  onClick={() => {
-                    if (onHistoryClick) onHistoryClick();
-                    setIsMenuOpen(false);
-                  }}
-                  className="flex w-full items-center gap-3 px-4 py-4 text-base font-black text-[#4D2B8C] bg-indigo-50/50 rounded-2xl"
+                <Link
+                  to="/dashboard"
+                  onClick={() => setIsMenuOpen(false)}
+                  className="flex w-full items-center gap-3 px-4 py-3 text-sm font-medium text-[#150D30] bg-[#F2EEF9] rounded-xl"
                 >
-                  <History className="w-5 h-5 text-[#4D2B8C]" />
-                  {t.nav.history}
-                </button>
+                  <History className="w-4 h-4 text-[#2D1065]" />
+                  {t.nav.dashboard}
+                </Link>
               )}
 
               <button
-                onClick={() => {
-                  setIsContactOpen(true);
-                  setIsMenuOpen(false);
-                }}
-                className="flex w-full items-center gap-3 px-4 py-4 text-base font-black text-[#4D2B8C] bg-indigo-50/50 rounded-2xl"
+                onClick={() => { setIsContactOpen(true); setIsMenuOpen(false); }}
+                className="flex w-full items-center gap-3 px-4 py-3 text-sm font-medium text-[#150D30] bg-[#F2EEF9] rounded-xl"
               >
-                <MessageSquare className="w-5 h-5 text-[#85409D]" />
+                <MessageSquare className="w-4 h-4 text-[#9B4DCA]" />
                 {t.nav.support}
               </button>
 
-              <div className="grid grid-cols-2 gap-3 pt-2">
+              <div className="grid grid-cols-2 gap-2 pt-2">
                 <button
-                  onClick={() => {
-                    onLanguageChange(lang === 'en' ? 'ar' : 'en');
-                    setIsMenuOpen(false);
-                  }}
-                  className="flex items-center justify-center gap-2 px-4 py-4 text-sm font-black text-[#4D2B8C] border-2 border-slate-100 rounded-2xl"
+                  onClick={() => { onLanguageChange(lang === 'en' ? 'ar' : 'en'); setIsMenuOpen(false); }}
+                  className="flex items-center justify-center gap-2 px-4 py-3 text-sm font-medium text-[#2D1065] border border-[#E8E2F0] rounded-xl bg-white"
                 >
                   <Languages className="w-4 h-4" />
                   {lang === 'en' ? 'العربية' : 'English'}
@@ -236,22 +237,16 @@ export const Layout: React.FC<LayoutProps> = ({ children, lang, onLanguageChange
 
                 {user ? (
                   <button
-                    onClick={() => {
-                      handleSignOut();
-                      setIsMenuOpen(false);
-                    }}
-                    className="flex items-center justify-center gap-2 px-4 py-4 text-sm font-black text-red-500 border-2 border-red-50 rounded-2xl"
+                    onClick={() => { handleSignOut(); setIsMenuOpen(false); }}
+                    className="flex items-center justify-center gap-2 px-4 py-3 text-sm font-medium text-red-500 border border-red-100 rounded-xl bg-red-50"
                   >
                     <LogOut className="w-4 h-4" />
                     {t.nav.signOut}
                   </button>
                 ) : (
                   <button
-                    onClick={() => {
-                      setIsAuthModalOpen(true);
-                      setIsMenuOpen(false);
-                    }}
-                    className="flex items-center justify-center gap-2 px-4 py-4 text-sm font-black text-white bg-[#4D2B8C] rounded-2xl"
+                    onClick={() => { setIsAuthModalOpen(true); setIsMenuOpen(false); }}
+                    className="flex items-center justify-center gap-2 px-4 py-3 text-sm font-medium text-white bg-[#2D1065] rounded-xl"
                   >
                     {t.nav.signIn}
                   </button>
@@ -266,21 +261,31 @@ export const Layout: React.FC<LayoutProps> = ({ children, lang, onLanguageChange
         {children}
       </main>
 
-      <footer className="bg-white border-t border-slate-100 py-12 no-print">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-6">
+      {/* Footer */}
+      <footer className="bg-white border-t border-[#E8E2F0] py-10 no-print">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-5">
           <div className="flex items-center gap-3">
-            <span className="text-[#4D2B8C] font-black text-xl">{t.brand.name} <span className="text-[#EEA727]">{t.brand.suffix}</span></span>
-            <span className="text-slate-200">|</span>
-            <p className="text-slate-400 text-sm font-bold">
-              {lang === 'en' ? `© ${new Date().getFullYear()}. All Rights Reserved.` : `© ${new Date().getFullYear()}. جميع الحقوق محفوظة.`}
+            <img src="/brand-assets/10-x logo.png" alt="10-x" className="w-7 h-7" />
+            <span className="font-bold text-[#150D30]">
+              {t.brand.name}<span className="text-[#C9984A]">{t.brand.suffix}</span>
+            </span>
+            <span className="text-[#E8E2F0] select-none">|</span>
+            <p className="text-slate-400 text-sm">
+              {lang === 'en'
+                ? `© ${new Date().getFullYear()}. All Rights Reserved.`
+                : `© ${new Date().getFullYear()}. جميع الحقوق محفوظة.`}
             </p>
           </div>
           <div className="flex items-center gap-6">
-            <Link to="/privacy-policy" className="text-sm font-bold text-slate-400 hover:text-[#85409D] transition-colors">{t.nav.privacyPolicy}</Link>
-            <Link to="/refund-policy" className="text-sm font-bold text-slate-400 hover:text-[#EEA727] transition-colors">{t.nav.refundPolicy}</Link>
+            <Link to="/privacy-policy" className="text-sm text-slate-400 hover:text-[#2D1065] transition-colors">
+              {t.nav.privacyPolicy}
+            </Link>
+            <Link to="/refund-policy" className="text-sm text-slate-400 hover:text-[#C9984A] transition-colors">
+              {t.nav.refundPolicy}
+            </Link>
             <button
               onClick={() => setIsContactOpen(true)}
-              className="text-sm font-bold text-slate-400 hover:text-[#4D2B8C] transition-colors"
+              className="text-sm text-slate-400 hover:text-[#2D1065] transition-colors"
             >
               {t.nav.support}
             </button>

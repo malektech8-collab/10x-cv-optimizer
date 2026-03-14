@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { MessageSquare, X, Send, Loader2, Bot, Sparkles } from 'lucide-react';
 import { translations, Language } from '../constants/translations';
-import { chatWithConsultant } from '../services/geminiService';
+import { chatWithConsultant } from '../services/aiService';
 
 interface ChatBotProps {
     lang: Language;
@@ -110,13 +110,13 @@ export const ChatBot: React.FC<ChatBotProps> = ({ lang }) => {
             {/* Floating Action Button */}
             <button
                 onClick={() => setIsOpen(true)}
-                className={`fixed ${lang === 'ar' ? 'left-6' : 'right-6'} bottom-20 h-14 bg-[#85409D] hover:bg-[#4D2B8C] text-white rounded-full flex items-center shadow-lg shadow-purple-500/30 transition-all hover:-translate-y-1 z-50 group no-print px-6 gap-3 ${isOpen ? 'scale-0 opacity-0' : 'scale-100 opacity-100 duration-300'}`}
+                className={`fixed ${lang === 'ar' ? 'left-6' : 'right-6'} bottom-20 h-14 bg-[#9B4DCA] hover:bg-[#2D1065] text-white rounded-full flex items-center shadow-lg shadow-purple-500/30 transition-all hover:-translate-y-1 z-50 group no-print px-6 gap-3 ${isOpen ? 'scale-0 opacity-0' : 'scale-100 opacity-100 duration-300'}`}
                 aria-label="Open Chatbot"
             >
                 <div className="relative">
                     <MessageSquare className="w-5 h-5 group-hover:hidden" />
                     <Sparkles className="w-5 h-5 hidden group-hover:block" />
-                    <div className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-[#EEA727] rounded-full border-2 border-[#85409D] group-hover:border-[#4D2B8C] transition-colors"></div>
+                    <div className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-[#C9984A] rounded-full border-2 border-[#9B4DCA] group-hover:border-[#2D1065] transition-colors"></div>
                 </div>
                 <span className="font-black text-sm tracking-wide">
                     {lang === 'en' ? 'Career Consultant' : 'المستشار المهني'}
@@ -129,10 +129,10 @@ export const ChatBot: React.FC<ChatBotProps> = ({ lang }) => {
                 dir={lang === 'ar' ? 'rtl' : 'ltr'}
             >
                 {/* Chat Header */}
-                <div className="bg-[#4D2B8C] p-5 flex items-center justify-between shadow-md shrink-0">
+                <div className="bg-[#2D1065] p-5 flex items-center justify-between shadow-md shrink-0">
                     <div className="flex items-center gap-3">
                         <div className="bg-white/20 p-2 rounded-xl">
-                            <Bot className="w-6 h-6 text-[#FFEF5F]" />
+                            <Bot className="w-6 h-6 text-[#E8D48B]" />
                         </div>
                         <div>
                             <h3 className="font-black text-white leading-tight">10-x AI Consultant</h3>
@@ -156,7 +156,7 @@ export const ChatBot: React.FC<ChatBotProps> = ({ lang }) => {
                         >
                             <div
                                 className={`max-w-[85%] p-4 rounded-2xl ${msg.role === 'user'
-                                    ? 'bg-[#85409D] text-white rounded-tr-sm'
+                                    ? 'bg-[#9B4DCA] text-white rounded-tr-sm'
                                     : 'bg-white text-slate-700 border border-slate-100 shadow-sm rounded-tl-sm'
                                     }`}
                             >
@@ -169,9 +169,9 @@ export const ChatBot: React.FC<ChatBotProps> = ({ lang }) => {
                     {isLoading && (
                         <div className="flex justify-start">
                             <div className="bg-white p-4 rounded-2xl rounded-tl-sm border border-slate-100 shadow-sm flex gap-2">
-                                <div className="w-2 h-2 bg-[#EEA727] rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-                                <div className="w-2 h-2 bg-[#EEA727] rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
-                                <div className="w-2 h-2 bg-[#EEA727] rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+                                <div className="w-2 h-2 bg-[#C9984A] rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+                                <div className="w-2 h-2 bg-[#C9984A] rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+                                <div className="w-2 h-2 bg-[#C9984A] rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
                             </div>
                         </div>
                     )}
@@ -186,7 +186,7 @@ export const ChatBot: React.FC<ChatBotProps> = ({ lang }) => {
                             value={inputValue}
                             onChange={(e) => setInputValue(e.target.value)}
                             placeholder={lang === 'en' ? "Ask career questions..." : "اسأل أسئلة مهنية..."}
-                            className="flex-1 bg-slate-50 border border-slate-200 px-4 py-3 rounded-xl text-sm outline-none focus:ring-2 focus:ring-[#85409D] focus:border-transparent transition-all font-medium placeholder-slate-400"
+                            className="flex-1 bg-slate-50 border border-slate-200 px-4 py-3 rounded-xl text-sm outline-none focus:ring-2 focus:ring-[#9B4DCA] focus:border-transparent transition-all font-medium placeholder-slate-400"
                             lang={lang}
                         />
                         <button
@@ -194,7 +194,7 @@ export const ChatBot: React.FC<ChatBotProps> = ({ lang }) => {
                             disabled={!inputValue.trim() || isLoading}
                             className={`p-3 rounded-xl flex items-center justify-center transition-all ${!inputValue.trim() || isLoading
                                 ? 'bg-slate-100 text-slate-400'
-                                : 'bg-[#EEA727] text-white hover:bg-[#d6931d] shadow-md shadow-orange-500/20'
+                                : 'bg-[#C9984A] text-white hover:bg-[#B8863F] shadow-md shadow-orange-500/20'
                                 }`}
                         >
                             {isLoading ? (

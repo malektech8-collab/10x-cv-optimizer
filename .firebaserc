@@ -1,5 +1,18 @@
 {
   "projects": {
     "default": "x-cv-optimizer"
-  }
+  },
+  "targets": {
+    "x-cv-optimizer": {
+      "hosting": {
+        "production": [
+          "x-cv-optimizer"
+        ],
+        "staging": [
+          "x-cv-staging"
+        ]
+      }
+    }
+  },
+  "etags": {}
 }

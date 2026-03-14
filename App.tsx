@@ -6,8 +6,8 @@ import { BlogPost } from './pages/BlogPost';
 import { AdminPanel } from './pages/AdminPanel';
 import { PrivacyPolicy } from './pages/PrivacyPolicy';
 import { RefundPolicy } from './pages/RefundPolicy';
-import { ChatBot } from './components/ChatBot';
-import { Layout } from './components/Layout';
+import { PaymentResult } from './pages/PaymentResult';
+import { Dashboard } from './pages/Dashboard';
 import { Language } from './constants/translations';
 
 const App: React.FC = () => {
@@ -19,11 +19,12 @@ const App: React.FC = () => {
         <Route path="/" element={<Home lang={lang} setLang={setLang} />} />
         <Route path="/blog" element={<Blog lang={lang} setLang={setLang} />} />
         <Route path="/blog/:id" element={<BlogPost lang={lang} setLang={setLang} />} />
+        <Route path="/dashboard" element={<Dashboard lang={lang} setLang={setLang} />} />
         <Route path="/admin" element={<AdminPanel lang={lang} setLang={setLang} />} />
         <Route path="/privacy-policy" element={<PrivacyPolicy lang={lang} setLang={setLang} />} />
         <Route path="/refund-policy" element={<RefundPolicy lang={lang} setLang={setLang} />} />
+        <Route path="/payment-result" element={<PaymentResult lang={lang} setLang={setLang} />} />
       </Routes>
-      <ChatBot lang={lang} />
     </BrowserRouter>
   );
 };
